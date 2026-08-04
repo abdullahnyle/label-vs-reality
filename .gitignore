@@ -1,0 +1,13 @@
+# Raw data — large, third-party, re-downloadable from dsld.od.nih.gov
+data/dsld/
+*.csv
+
+# The SQLite database — regenerable from CSVs + load procedure
+*.db
+supplements.db
+data/supplements.db
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
