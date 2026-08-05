@@ -11,3 +11,5 @@ data/supplements.db
 .DS_Store
 Thumbs.db
 .vscode/
+
+*.db-journal

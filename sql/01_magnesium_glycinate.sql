@@ -8,8 +8,8 @@ SELECT
     f."Ingredient",
     f."Amount Per Serving",
     f."Amount Per Serving Unit"
-FROM DietarySupplementFacts_1 AS f
-JOIN ProductOverview_1 AS p
+FROM DietarySupplementFacts AS f
+JOIN ProductOverview AS p
     ON f."DSLD ID" = p."DSLD ID"
 WHERE f."Ingredient" LIKE '%magnesium glycinate%'
 ORDER BY f."DSLD ID";
