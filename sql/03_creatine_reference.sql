@@ -106,3 +106,34 @@ WHERE [Ingredient] IN (
 -- guess dressed up as a rule. Next step instead: look at raw dose amount
 -- directly (effective vs not, regardless of what else is in the product),
 -- which doesn't require inventing a threshold.
+
+-- Sharpened the dose-status split using a raw dose cutoff instead of a ratio
+-- (avoids picking an arbitrary threshold). A product counts as delivering an
+-- effective dose if it has >=3g of creatine, regardless of serving size or
+-- what else is in the product.
+--
+-- Result: 1,038 distinct products hit >=3g (effective), 651 fall under it.
+--
+-- Split the 651 by whether the product name mentions creatine. 581 (about
+-- 89%) don't, confirming most of the "underdosed" signal is really the
+-- blend/gainer contamination flagged earlier, not real underdosing. Only 70
+-- products are actually named as creatine and still come in under 3g.
+--
+-- Checked those 70 directly. About half (33) are capsule products, where a
+-- single serving being under 3g is likely by design, most capsule creatine
+-- is meant to be taken as several capsules across a day, not one serving as
+-- the full dose. Not confirmed yet, since we haven't checked whether the
+-- labeled daily total reaches 3g, just flagging the likely explanation.
+--
+-- The other 37 are powder or other formats. A few are near-misses close to
+-- 3g (Creatine-X at 2.5g), a few still look blend-like despite having
+-- "creatine" in the name (Amplified Creatine XXX Power, 1.51g in an 8.39g
+-- serving) and slipped past the name filter, and some appear to be genuinely
+-- low-dosed dedicated creatine products. Not yet split apart individually.
+--
+-- Current honest picture: roughly 69% of matched products with usable dose
+-- data deliver an effective creatine dose. Of the remainder, most are
+-- contamination (wrong product category), a chunk are capsule products
+-- where the serving math likely explains the low number, and a small,
+-- unresolved group appears to be real underdosing or near-misses. That
+-- small group hasn't been individually verified yet.
