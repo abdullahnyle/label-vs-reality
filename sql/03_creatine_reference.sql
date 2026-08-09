@@ -157,6 +157,33 @@ WHERE [Ingredient] IN (
 -- problem. The 503 products still under 2.5g are largely the same
 -- mass-gainer/whey/blend contamination already documented, moving the line
 -- rescues the near-miss cluster, it doesn't clean up the wrong-category
-
-
 -- products sitting underneath it.
+-- Investigated the 366 products that showed up more than once in the original
+-- match (some DSLD IDs appeared exactly 3 times). Pulled full rows for a few
+-- of them (182876, 209975, 268422) to see what was actually going on.
+--
+-- These aren't duplicates in the 239649 sense at all. Each one is a single
+-- product that lists its full nutrition panel more than once because the
+-- label offers more than one serving size. 182876 and 268422 are mass gainers
+-- with a 285g and a 570g serving option, and every nutrient on the label,
+-- creatine included, scales in exact proportion between the two (5g creatine
+-- at 285g, 10g at 570g, same ratio holding across calories, protein,
+-- vitamins, everything). 209975 is a pre-workout with three scoop sizes
+-- (5.1g, 7.65g, 15.3g), same pattern, creatine and every other ingredient
+-- scaling proportionally across all three.
+--
+-- This is a real structural feature of the data, not an error, and it's good
+-- news for trusting the underlying numbers. But it does mean something for
+-- the dose analysis specifically: a single product can show up in both the
+-- "effective dose" and "under 3g" buckets at the same time, depending on
+-- which serving-size row got counted (182876 has a 5g row and a 10g row for
+-- the same underlying product). All the distinct-product counts run tonight
+-- may include some of this cross-bucket overlap. Worth resolving before the
+-- final write-up, likely by picking one serving size per product (probably
+-- the smallest, single-serving option) rather than counting every size
+-- option as if it were a separate data point.
+--
+-- One smaller thread inside this: 182876 shows two 570g rows both listing
+-- exactly 10g creatine, identical to each other. Not investigated further,
+-- could be a genuine repeat entry or something about how DSLD records
+-- product variants. Low priority given the larger finding above.
