@@ -41,13 +41,12 @@ WHERE Form = 'Creatine Monohydrate';
 --
 -- Result: 2,529 rows, 2,163 distinct products.
 --
--- Still open: about 366 products show up more than once (some DSLD IDs appear
--- exactly 3 times). Haven't looked into why yet, could be a real duplicate or
--- something structural. Next session.
---
--- Also still open: this only confirms the ingredient name matched. It doesn't yet
--- check whether these products actually label 3-5g/day like they should. That
--- comparison is the real finding and hasn't happened yet.
+-- The 366 products that show up more than once, and the dose comparison itself,
+-- both got worked through later in this session. See the notes further down.
+-- Of the 2,163, roughly 652 (about 30%) carry no usable dose data at all: their
+-- Amount Per Serving or unit is simply blank in DSLD. That's a real finding on
+-- its own, not just an exclusion. Nearly a third of products claiming creatine
+-- monohydrate can't be dose-checked because the label figure isn't recorded.
 
 SELECT COUNT(*) AS total_rows, COUNT(DISTINCT [DSLD ID]) AS distinct_products
 FROM DietarySupplementFacts
@@ -80,7 +79,7 @@ WHERE [Ingredient] IN (
 );
 
 -- Dose distribution, run against the 1,511 products with usable dose data
--- (2,163 minus the 652 with a null Amount Per Serving or unit). Converted
+-- (2,163 minus the 652 blank-dose products noted above). Converted
 -- everything to grams first (mg / 1000, Gram(s) and g treated the same).
 --
 -- Roughly 999 distinct products land in the 3-5g reference range, 651 land
