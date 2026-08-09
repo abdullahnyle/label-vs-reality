@@ -137,3 +137,26 @@ WHERE [Ingredient] IN (
 -- where the serving math likely explains the low number, and a small,
 -- unresolved group appears to be real underdosing or near-misses. That
 -- small group hasn't been individually verified yet.
+
+-- Checked whether 2.5g should replace 3g as the effective-dose cutoff, since a
+-- cluster of real products landed right at 2.5g in the previous check. Result:
+-- 1,115 distinct products hit >=2.5g versus 1,038 at >=3g, a real jump of
+-- about 77 products, roughly 69% effective moving to roughly 74%.
+--
+-- This does NOT mean 2.5g should replace 3g as the reference dose. The
+-- CreatineFormReference table stays at 3-5g/day, that's what the ISSN source
+-- actually states, and the reference shouldn't be adjusted to match what
+-- products happen to do. What the 2.5g check actually shows is narrower: a
+-- real cluster of products cluster right at 2.5g (Creatine SAP, Creatine XS,
+-- Creatine-X, Creatine Freak, Six Point Creatine, several others), which
+-- looks like a common, intentional industry dose choice sitting just under
+-- the 3g line, not a failure to hit the target. Worth noting as a pattern in
+-- the eventual write-up, not as grounds to move the reference number.
+--
+-- Also worth noting: lowering the cutoff doesn't touch the contamination
+-- problem. The 503 products still under 2.5g are largely the same
+-- mass-gainer/whey/blend contamination already documented, moving the line
+-- rescues the near-miss cluster, it doesn't clean up the wrong-category
+
+
+-- products sitting underneath it.
