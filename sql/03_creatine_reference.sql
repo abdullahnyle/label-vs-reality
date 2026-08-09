@@ -78,3 +78,31 @@ WHERE [Ingredient] IN (
     'instantized & micronized Creatine Monohydrate',
     'ultrapure Creatine Monohydrate'
 );
+
+-- Dose distribution, run against the 1,511 products with usable dose data
+-- (2,163 minus the 652 with a null Amount Per Serving or unit). Converted
+-- everything to grams first (mg / 1000, Gram(s) and g treated the same).
+--
+-- Roughly 999 distinct products land in the 3-5g reference range, 651 land
+-- under 3g, 89 land over 5g. The under-3g number looked bad at first read,
+-- but it turned out to be misleading.
+--
+-- Pulled a sample of the under-3g rows and found a real problem: a lot of
+-- them aren't creatine products at all. Serious Mass (a mass gainer) lists
+-- 1g of creatine inside a 334g serving. Same pattern in several whey and
+-- post-workout blends, and one cleanse product (Mega Clean Herbal Cleanse)
+-- that has nothing to do with creatine and only matched because of the
+-- ingredient text. These products were never trying to deliver an effective
+-- creatine dose, creatine is just one ingredient among many, so measuring
+-- them against the 3-5g reference isn't a fair comparison.
+--
+-- Still open: how to separate genuine creatine products from products that
+-- only include creatine as a minor ingredient. A name-based filter
+-- (Product Name mentions "creatine") isn't reliable on its own, since some
+-- pre-workout blends without "creatine" in the name still dose it properly
+-- (AC8 Pre Workout, 3g in a 16g serving; A Bomb, 5g in a 21.4g serving).
+-- A ratio-based cutoff was considered but not locked, since picking a
+-- specific threshold (0.7? 0.75?) without a real basis would just be a
+-- guess dressed up as a rule. Next step instead: look at raw dose amount
+-- directly (effective vs not, regardless of what else is in the product),
+-- which doesn't require inventing a threshold.
