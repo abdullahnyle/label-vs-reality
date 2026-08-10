@@ -186,3 +186,51 @@ WHERE [Ingredient] IN (
 -- exactly 10g creatine, identical to each other. Not investigated further,
 -- could be a genuine repeat entry or something about how DSLD records
 -- product variants. Low priority given the larger finding above.
+-- Aug 10: the counting fix. The distinct-product counts above (from Aug 9)
+-- double-counted multi-serving-size products, since a single product listing
+-- several scoop sizes gets one row per size, and those rows can land in
+-- different dose buckets. Collapsed each product to a single row before
+-- re-running the effective vs under-3g split.
+--
+-- Kept the largest Amount Per Serving per product rather than the smallest.
+-- A product offering two legitimate sizes hasn't lied at either one, both are
+-- real disclosed options, so the largest available dose is the honest ceiling
+-- of what the label promises and the fairest single number for judging whether
+-- the product can deliver an effective dose at all. (This is a firmer call than
+-- the "probably the smallest" lean in the Aug 9 note above. Landed on largest
+-- after actually reasoning through what honesty means for a multi-size product.)
+--
+-- Used ROW_NUMBER() partitioned by DSLD ID to guarantee exactly one row per
+-- product. This mattered more than expected: 113 products (about 7%) have a
+-- genuine tie at their max dose, and an earlier MAX-join version counted every
+-- tied row separately, inflating the count. The tie inflation was entirely in
+-- the under-3g bucket.
+--
+-- Deduplicated split, one row per product, all four numbers from a single pass
+-- and they sum to 2,163 exactly:
+--   587  blank dose (no usable Amount Per Serving, can't be checked)
+--   1038 effective (>=3g)
+--   538  under 3g
+-- So among the 1,576 products with usable dose data: ~66% effective, ~34% under.
+-- The effective count (1038) is identical to the Aug 9 pre-fix number. Only the
+-- under-3g count moved, 651 down to 538, which is the removed tie inflation.
+--
+-- Then split the 538 under-3g products by whether the product name mentions
+-- creatine (Aug 9's proxy for "is this even trying to be a creatine product"):
+--   473 (~88%) are NOT named creatine, the mass-gainer/whey/blend contamination
+--       already documented, products where an effective creatine dose was never
+--       the point.
+--   65  ARE named creatine and still land under 3g. This is the real
+--       candidate-underdosing group.
+--
+-- The 88% here closely matches Aug 9's ~89% pre-dedup read, so the
+-- contamination finding survived the counting fix.
+--
+-- Not yet done: the 65 named-under-3g products haven't been individually
+-- re-examined post-dedup. Aug 9 looked at the pre-dedup version (70 products)
+-- and found roughly half were capsules (per-serving figure understates daily
+-- total) plus a 2.5g near-miss cluster, but that breakdown hasn't been
+-- re-confirmed against this deduplicated 65. Also worth stating plainly:
+-- "named creatine" is a proxy, not proof. A named product could still genuinely
+-- underdose, and an oddly-named product could be a real creatine supplement.
+-- The proxy is reasonable but it's a proxy, and that belongs in the README limits.
