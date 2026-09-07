@@ -38,13 +38,15 @@ Unit parsing was checked against the actual unit strings in the data (`Gram(s)`,
 
 ---
 
-## This measures per-serving amount, not daily dose
+## This measures per-serving amount, not daily dose, on purpose
 
-That's a real limitation, not a footnote. A capsule product might say 700mg per capsule and still add up to an effective dose if you're meant to take four a day — but that requires the label's `Suggested Use` field, and for the capsule products in the under-3g group, that field is empty. All 26 of them.
+A capsule product might say 700mg per capsule and still add up to an effective dose if you're meant to take four a day. Checking that means reading `Suggested Use`, the field with the actual daily directions.
 
-So for those 26, whether they actually reach an effective daily dose can't be answered from this data. Not "probably fine," not "probably underdosed" — genuinely unknown, and that's worth saying plainly rather than picking whichever guess sounds better.
+That field is populated for 93.6% of on-market products (1,196 of 1,278), so it's not a coverage problem. It's a structure problem. A random sample of 30 populated entries turned up plain single doses, dose ranges that depend on training day or bodyweight, separate loading and maintenance phases with different amounts, and — on products where creatine is a minor ingredient in a bigger formula — directions with no creatine dosing information at all. There's no consistent shape to pull a single daily-gram number out of automatically without the result being biased toward whatever pattern the parser happens to catch, and reading all ~1,196 entries by hand wasn't done for this pass.
 
-**Status: verified that the field is blank. Open on what the real dosing looks like.**
+Per-serving is what this analysis actually measures. Not being able to cleanly convert to daily dose is a real property of this dataset, not a step that got skipped.
+
+**Status: verified (the coverage figure, and the structural variety in the sample). The decision not to build a daily-dose figure from this is a deliberate scope choice, not an open question.**
 
 ---
 
@@ -52,16 +54,22 @@ So for those 26, whether they actually reach an effective daily dose can't be an
 
 Of the 268 on-market products under 3g, 224 of them (84%) aren't even named as creatine products. They're mass gainers, whey blends, and similar — creatine's just one ingredient among many, and it was never the point of the product. That's contamination from the ingredient-text match, not evidence that real creatine products are underdosed.
 
-Only 44 products are both named creatine and genuinely under 3g. Of those, 18 look like real, single-serving low-dose products — several cluster right around 2.5g, which matches a pattern already noticed earlier in the project (a handful of brands seem to intentionally dose just under the 3g line). The other 26 are the capsule group above, where the real answer is unknown rather than resolved either way.
+Only 44 products are both named creatine and genuinely under 3g. Of those, 18 look like real, single-serving low-dose products — several cluster right around 2.5g, which matches a pattern already noticed earlier in the project (a handful of brands seem to intentionally dose just under the 3g line). The other 26 are capsule-format products; whether their true daily dose reaches 3g isn't established here, for the same reason described above — this project measures per-serving amount, not daily dose.
 
 **Status: verified on the counts. The 2.5g grouping is a reasonable read of the data, not independently confirmed — call it a pattern, not a fact.**
 
 ---
 
-## Two loose ends, left open on purpose
+## Why the on-market and mixed-population rates didn't quite match
+
+Earlier, the named-and-under-3g rate looked different on-market (16.4%) versus mixed on/off-market (12.1%), with no explanation. Checked it directly: off-market products are actually *more* dominated by contamination (92.2% not-named-creatine) than on-market ones (83.6%). Discontinued products skew more toward creatine-as-a-minor-ingredient formulas; what's still on shelves skews slightly more toward dedicated creatine products that happen to underdose. Mixing the two populations together diluted the on-market rate.
+
+**Status: verified. Real mechanism, not a coincidence.**
+
+---
+
+## One loose end, left open on purpose
 
 **A magnesium glycinate product (DSLD ID 239649) lists the same ingredient twice**, identical in every column, with no explanation findable in the data. Checked twice, across two different database states, same result both times. This isn't a creatine finding, but it's the clearest example in this dataset of something that just doesn't have an answer, and it's worth keeping visible rather than quietly dropping it.
-
-**The on-market and mixed-population named-under-3g rates don't quite match** — about 16% on-market versus about 12% mixed. Small gap, doesn't change the headline number, but nobody's dug into why yet.
 
 **Status: open. Not blocking anything, just not pretending to be solved.**

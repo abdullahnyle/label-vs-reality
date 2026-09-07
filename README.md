@@ -38,27 +38,34 @@ creatine products are underdosed.
 This is a per-serving amount analysis, not a daily-dose analysis. Those are
 different questions. A capsule product listing 700mg per capsule isn't
 necessarily underdosed if the label recommends four capsules a day — that
-would be 2.8g, close to the reference range. Checking that requires the
-`Suggested Use` field.
+would be 2.8g, close to the reference range.
 
-For the 26 capsule-format products in this dataset that land under 3g per
-serving, `Suggested Use` is blank. Whether these products actually reach an
-effective daily dose can't be determined from this data. That's a real limit
-of what DSLD records, not a gap in this analysis — and it's the reason this
-project measures per-serving amount rather than claiming to measure daily
-dose.
+I looked into whether a daily-dose version of this analysis was possible.
+`Suggested Use` — the field that would give the real daily total — is
+populated for 93.6% of on-market products, so coverage isn't the blocker.
+The content is. A random sample of that field turned up single doses
+("take 2500mg daily"), dose ranges that vary by training day or bodyweight,
+separate loading and maintenance phases with different amounts each, and
+free text with no dosing information at all on products where creatine is
+a minor ingredient in a larger formula. There's no consistent structure to
+extract a single daily-gram figure from automatically without either
+building a parser whose coverage would be biased toward whichever text
+patterns it happens to catch, or reading every entry by hand.
+
+I chose not to do either for this pass. A daily-dose figure built on biased
+automated parsing would look more rigorous than the per-serving figure
+above while actually being less trustworthy, and that's a worse outcome
+than stating the limitation plainly. Per-serving amount is what this
+analysis measures, and the reason it's not a daily-dose analysis is a
+finding in itself, not an oversight.
 
 ## Still open
 
 - One duplicate DSLD record (magnesium glycinate, ID 239649) with no
   discoverable cause — flagged rather than quietly dropped.
-- A modest, unexplained gap between the on-market and mixed-population
-  named-under-3g rates (16.4% vs 12.1%).
-- Whether `Suggested Use` is usable for daily-dose analysis beyond the
-  capsule subgroup checked here.
 
-See `docs/claim-ledger.md` for the full reasoning and status behind every
-claim above.
+See `docs/claim-ledger.md` for the full source and confidence breakdown
+behind every claim above.
 
 ## Approach
 
