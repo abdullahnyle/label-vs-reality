@@ -28,7 +28,9 @@ Turns out 41% of the raw creatine match (885 of 2,163 products) is off-market. R
 
 ## The headline number
 
-**About 71% of on-market creatine products with usable dose data hit the 3-5g/day reference range** (ISSN position stand, Kreider et al. 2017), measured as amount per serving.
+**About 71% of on-market creatine products with usable dose data have a recorded per-serving amount of at least 3g** — the low end of the ISSN's 3-5g/day maintenance-dose range (Kreider et al. 2017).
+
+This is a threshold description, not an efficacy claim. It says the labeled amount meets or exceeds 3g; it doesn't say the product works, gets absorbed, or matches what a user actually takes daily. It also doesn't distinguish 3g from 8g — only "at least 3g" from "under 3g."
 
 Exact figures: 1,278 on-market products. 648 hit ≥3g, 268 land under it, 362 have no usable dose data. 648 out of the 916 with real numbers is 70.7%.
 

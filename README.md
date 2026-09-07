@@ -13,8 +13,15 @@ works.
 ## Creatine — first finding
 
 **About 71% of on-market creatine monohydrate products with usable dose data
-deliver an effective dose (≥3g per serving), based on the ISSN's 3-5g/day
-maintenance-dose reference (Kreider et al. 2017).**
+have a recorded per-serving amount of at least 3g, the low end of the
+ISSN's 3-5g/day maintenance-dose range (Kreider et al. 2017).**
+
+That's a threshold description, not a claim that these products are
+"effective" — this project doesn't measure absorption, adherence, or real-
+world outcomes, only what's printed on the label relative to a published
+reference range. A product at 3g/serving matches the ISSN's low end; the
+range itself runs to 5g, and this figure doesn't distinguish 3g from 8g,
+only "at least 3g" from "under 3g."
 
 That number came out of fixing two real methodology problems, not from a
 clean first pass.
@@ -22,16 +29,16 @@ clean first pass.
 **Off-market labels were skewing the result.** DSLD includes historical and
 discontinued labels alongside current ones. The first pass at this analysis
 didn't filter for that. Off-market products turned out to be 41% of the raw
-ingredient match, and restricting to on-market-only moved the effective-dose
-rate from an initial ~66% to the ~71% figure above.
+ingredient match, and restricting to on-market-only moved the share hitting
+the 3g threshold from an initial ~66% to the ~71% figure above.
 
-**Most of what looked like underdosing wasn't creatine underdosing at all.**
-Filtering to products whose ingredient list matches "creatine monohydrate"
-exactly, mass gainers and whey blends that include a small amount of
-creatine as one ingredient among many show up in the same filter. Of the
-products landing under 3g, about 84% aren't even named as creatine products
-— they're contamination from other categories, not evidence that dedicated
-creatine products are underdosed.
+**Most of what looked like low-dose creatine wasn't a real creatine product
+at all.** Filtering to products whose ingredient list matches "creatine
+monohydrate" exactly, mass gainers and whey blends that include a small
+amount of creatine as one ingredient among many show up in the same filter.
+Of the products landing under 3g, about 84% aren't even named as creatine
+products — they're contamination from other categories, not evidence that
+dedicated creatine products fall short of the threshold.
 
 ## What this doesn't establish
 
@@ -78,9 +85,11 @@ references, not manufacturer claims.
 
 ## Data
 
-Source: [DSLD](https://dsld.od.nih.gov). Raw files aren't included here
-(large, not mine to redistribute, easy to re-download). See
-`scripts/load_data.md` to rebuild the database yourself.
+Source: [DSLD](https://dsld.od.nih.gov). DSLD's own API is published under a
+[CC0 1.0 public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/),
+so redistribution isn't the issue — raw files aren't included here because
+of size, not licensing. See `scripts/load_data.md` to rebuild the database
+yourself.
 
 ## License
 
