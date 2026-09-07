@@ -1,3 +1,11 @@
+-- Exploratory chemical reference, not used by the creatine pipeline.
+-- Do not multiply a Supplement Facts nutrient amount by these fractions:
+-- it may already be elemental magnesium. Verify the source panel and
+-- quantity basis before any compound-mass conversion. Chemistry citations
+-- and hydration assumptions below still require a separate source review.
+-- FDA quantity-basis guidance:
+-- https://www.fda.gov/food/dietary-supplements-guidance-documents-regulatory-information/dietary-supplement-labeling-guide-chapter-iv-nutrition-labeling
+
 -- MagnesiumFormReference: how much of a labeled compound is actually
 -- elemental magnesium, vs. the glycine/oxygen it's bonded to.
 -- Standalone lookup table, doesn't pull from ProductOverview or

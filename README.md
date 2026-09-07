@@ -1,96 +1,96 @@
 # Label vs. Reality
 
-Where's the gap between what a supplement's label claims and what's actually
-worth taking? Which forms, doses, and products are underdosed, poorly
-absorbed, overpriced, or don't even contain what they say?
+An exploratory study of recorded creatine amounts in NIH's Dietary Supplement
+Label Database (DSLD). The question is how label amounts vary, how much data is
+usable, and how the answer changes when a label lists several serving options.
 
-Real product labels from NIH's Dietary Supplement Label Database (DSLD),
-214,780 labels, joined against a hand-built reference table of what actually
-works.
+The analysis uses SQLite for matching and aggregation, with a small Python
+standard-library layer for CSV loading, quantity validation and reproducible
+exports. The unit of analysis is a **distinct DSLD label ID**, not necessarily a
+unique physical product.
 
----
+## Current status
 
-## Creatine — first finding
+The pipeline has been rebuilt and checked against synthetic fixtures. The original
+DSLD snapshot is not included in the repository and has not yet been rerun through
+this version. **There is no validated dataset result for this version yet.**
 
-**About 71% of on-market creatine monohydrate products with usable dose data
-have a recorded per-serving amount of at least 3g, the low end of the
-ISSN's 3-5g/day maintenance-dose range (Kreider et al. 2017).**
+Earlier local work reported 1,278 ingredient-matched IDs marked on-market: 648 at
+least 3 g per serving, 268 below 3 g and 362 with no usable amount. That gives 70.7%
+among 916 usable records, with 28.3% of the full cohort unassessable. These are
+historical observations awaiting reconciliation, not outputs of the current code.
+The [claim ledger](docs/claim-ledger.md) records their status.
 
-That's a threshold description, not a claim that these products are
-"effective" — this project doesn't measure absorption, adherence, or real-
-world outcomes, only what's printed on the label relative to a published
-reference range. A product at 3g/serving matches the ISSN's low end; the
-range itself runs to 5g, and this figure doesn't distinguish 3g from 8g,
-only "at least 3g" from "under 3g."
+Two errors in the earlier SQL motivated the rebuild:
 
-That number came out of fixing two real methodology problems, not from a
-clean first pass.
+- Later statements tried to reuse CTEs after their statement had ended.
+- Raw amounts were ranked before unit conversion, so 500 mg could be selected
+  instead of 4 g. Blank or malformed text could also become zero in arithmetic.
 
-**Off-market labels were skewing the result.** DSLD includes historical and
-discontinued labels alongside current ones. The first pass at this analysis
-didn't filter for that. Off-market products turned out to be 41% of the raw
-ingredient match, and restricting to on-market-only moved the share hitting
-the 3g threshold from an initial ~66% to the ~71% figure above.
+The new analysis validates amounts first, preserves unresolved values, and reports
+both maximum and minimum usable amounts. It exports source fields and review
+queues so that automated results can be checked against the labels.
 
-**Most of what looked like low-dose creatine wasn't a real creatine product
-at all.** Filtering to products whose ingredient list matches "creatine
-monohydrate" exactly, mass gainers and whey blends that include a small
-amount of creatine as one ingredient among many show up in the same filter.
-Of the products landing under 3g, about 84% aren't even named as creatine
-products — they're contamination from other categories, not evidence that
-dedicated creatine products fall short of the threshold.
+## Run it
 
-## What this doesn't establish
+Python 3.10 or newer with SQLite 3.25 or newer is sufficient; no third-party Python
+packages are required. Start in the repository root.
 
-This is a per-serving amount analysis, not a daily-dose analysis. Those are
-different questions. A capsule product listing 700mg per capsule isn't
-necessarily underdosed if the label recommends four capsules a day — that
-would be 2.8g, close to the reference range.
+```sh
+python scripts/load_data.py data/dsld/extracted data/supplements.db
+python scripts/analyze.py data/supplements.db results/local-run --dataset-label "DSLD original snapshot"
+python -m unittest discover -s tests -v
+```
 
-I looked into whether a daily-dose version of this analysis was possible.
-`Suggested Use` — the field that would give the real daily total — is
-populated for 93.6% of on-market products, so coverage isn't the blocker.
-The content is. A random sample of that field turned up single doses
-("take 2500mg daily"), dose ranges that vary by training day or bodyweight,
-separate loading and maintenance phases with different amounts each, and
-free text with no dosing information at all on products where creatine is
-a minor ingredient in a larger formula. There's no consistent structure to
-extract a single daily-gram figure from automatically without either
-building a parser whose coverage would be biased toward whichever text
-patterns it happens to catch, or reading every entry by hand.
+An existing database with the required DSLD tables can be passed directly to
+`analyze.py`. The analysis opens it read-only. Close the database editor and save
+pending work first. Both commands refuse to replace existing outputs.
 
-I chose not to do either for this pass. A daily-dose figure built on biased
-automated parsing would look more rigorous than the per-serving figure
-above while actually being less trustworthy, and that's a worse outcome
-than stating the limitation plainly. Per-serving amount is what this
-analysis measures, and the reason it's not a daily-dose analysis is a
-finding in itself, not an oversight.
+The [loading instructions](scripts/load_data.md) explain provenance, schema
+requirements and what to do when the original download date is unknown.
 
-## Still open
+A run produces a report and figure, record and source-row exports, parsing counts,
+threshold/serving/market sensitivity comparisons, a candidate review queue, a
+repeatable Suggested Use sample and a provenance manifest. Generated queues are
+**pending reviews**, not completed classifications.
 
-- One duplicate DSLD record (magnesium glycinate, ID 239649) with no
-  discoverable cause — flagged rather than quietly dropped.
+## What the analysis measures
 
-See `docs/claim-ledger.md` for the full source and confidence breakdown
-behind every claim above.
+The primary screen uses the largest usable recorded amount for each label ID and
+compares it with 3 g. The alias list includes the original 25 ingredient strings;
+a separate comparison excludes two names that do not explicitly say monohydrate.
+Ingredient wording alone does not verify chemical identity.
 
-## Approach
+The 3 g screen is motivated by the low end of the typical 3–5 g/day maintenance
+range discussed in the [2017 ISSN position stand](https://doi.org/10.1186/s12970-017-0173-z).
+A per-serving amount does not establish daily intake or effectiveness. At least
+3 g also includes amounts above 5 g; it does not mean within the reference range.
 
-DSLD product and ingredient data loaded into SQLite across two tables:
-`ProductOverview` (product identity, market status, serving size) and
-`DietarySupplementFacts` (per-ingredient dose data), joined on DSLD ID.
-Reference doses come from a hand-built table (`CreatineFormReference`,
-`MagnesiumFormReference`) sourced from peer-reviewed and authoritative
-references, not manufacturer claims.
+Names containing “creatine” identify a group for review. Names without that word
+are not automatically irrelevant products. Blends remain part of the broad
+ingredient-matched cohort.
 
-## Data
+See [methodology](docs/methodology.md) for the selection rules and limitations,
+and [discussion notes](docs/defending-the-analysis.md) for the reasoning behind them.
 
-Source: [DSLD](https://dsld.od.nih.gov). DSLD's own API is published under a
-[CC0 1.0 public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/),
-so redistribution isn't the issue — raw files aren't included here because
-of size, not licensing. See `scripts/load_data.md` to rebuild the database
-yourself.
+## Data and limits
+
+[NIH DSLD](https://ods.od.nih.gov/Research/Dietary_Supplement_Label_Database.aspx)
+contains recorded label information, including historical entries. Market status
+is taken from the snapshot and is not a check of current retail availability.
+This is not a representative market survey or a laboratory assay. Absorption,
+actual contents, price, clinical outcomes and manufacturer intent are not measured.
+Full daily-dose extraction is outside this version's scope.
+
+The historical database reportedly contained 214,780 ProductOverview rows. A new
+download may have a different size; it must be treated as a separate snapshot.
+DSLD identifies its data as public domain under CC0 in its
+[API guide](https://dsld.od.nih.gov/api-guide). Large raw files are excluded for
+size, and source provenance is retained separately from the project's MIT license.
+
+The earlier magnesium work is exploratory. Its chemical reference is not applied
+to label amounts, and the repeated rows for ID 239649 remain unresolved.
 
 ## License
 
-MIT. See `LICENSE`.
+Project code and documentation: [MIT](LICENSE). Source data: NIH DSLD, CC0.

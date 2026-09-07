@@ -1,15 +1,17 @@
-# Raw data — large, third-party, re-downloadable from dsld.od.nih.gov
+# Raw snapshots and databases stay local.
 data/dsld/
-*.csv
-
-# The SQLite database — regenerable from CSVs + load procedure
 *.db
-supplements.db
-data/supplements.db
+*.db-journal
+*.db-wal
+*.db-shm
 
-# OS / editor cruft
+# Publish reviewed results deliberately; keep individual runs local.
+results/*
+!results/published/
+
+__pycache__/
+*.py[cod]
+.venv/
 .DS_Store
 Thumbs.db
 .vscode/
-
-*.db-journal
