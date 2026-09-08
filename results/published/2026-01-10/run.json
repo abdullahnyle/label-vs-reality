@@ -1,0 +1,148 @@
+{
+  "dataset_label": "DSLD CSV download 10 January 2026",
+  "database_sha256": "0a4ad89d95a5041b1d08165c9313a09f56570d43b9afc6867e72365e8558f448",
+  "source_counts": {
+    "ProductOverview": 214780,
+    "DietarySupplementFacts": 2020130,
+    "orphan_ingredient_rows": 0
+  },
+  "matched_ids": 2163,
+  "candidate_reviews_pending": 44,
+  "sample_seed": 20260907,
+  "python_version": "3.12.13",
+  "sqlite_version": "3.53.1",
+  "source_manifest": [
+    {
+      "table_name": "DietarySupplementFacts",
+      "file_name": "DietarySupplementFacts_1.csv",
+      "sha256": "e8251b420214ffef90c9e62db6554d2f5b384b9c309d4eeffea1e52934e183c1",
+      "rows": 301879,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "DietarySupplementFacts",
+      "file_name": "DietarySupplementFacts_2.csv",
+      "sha256": "4bd99a5aa20fe796545f5d78a271d3b434139fd32298a85634f85b7589cb406f",
+      "rows": 324361,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "DietarySupplementFacts",
+      "file_name": "DietarySupplementFacts_3.csv",
+      "sha256": "aa1d5d2795c7fd653e070ff2ad0d68ed417c910680b75d28abce631e54027849",
+      "rows": 328525,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "DietarySupplementFacts",
+      "file_name": "DietarySupplementFacts_4.csv",
+      "sha256": "f05ab430dc3cc7f2303097b08b14f98fb0d30d0f204a0afc6530fc73227f51e0",
+      "rows": 284737,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "DietarySupplementFacts",
+      "file_name": "DietarySupplementFacts_5.csv",
+      "sha256": "5eda3e83a76c405c75759866e01daad5fafc34e1011ef445ff92e72bc82c6feb",
+      "rows": 271943,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "DietarySupplementFacts",
+      "file_name": "DietarySupplementFacts_6.csv",
+      "sha256": "afbd828b11ca0e9e12c833a11c8b2ef0e12ea158806a859f5f55f10f6f5adee3",
+      "rows": 227194,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "DietarySupplementFacts",
+      "file_name": "DietarySupplementFacts_7.csv",
+      "sha256": "9def953088a980adfaf0970e92a637de33c602df4ffc043e3e93b4c02faac9f8",
+      "rows": 237075,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "DietarySupplementFacts",
+      "file_name": "DietarySupplementFacts_8.csv",
+      "sha256": "2ca00576995ad6d95ed44f76d6ea3d7ab46ef241dc807ded4e2478ed04344122",
+      "rows": 44416,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "ProductOverview",
+      "file_name": "ProductOverview_1.csv",
+      "sha256": "b646cf518f216b6c050cf67503e0d663d04c1a33277fc57f4b74bc16851fa5e7",
+      "rows": 30000,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "ProductOverview",
+      "file_name": "ProductOverview_2.csv",
+      "sha256": "126355b95d62dda9ce94b02efa6edcc6cdaebdc033443f4613d907f39773d042",
+      "rows": 30000,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "ProductOverview",
+      "file_name": "ProductOverview_3.csv",
+      "sha256": "561edc209a93e7b4d4f0308537b7d0d3dbf845ee9d1de6c20cbac593572237d0",
+      "rows": 30000,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "ProductOverview",
+      "file_name": "ProductOverview_4.csv",
+      "sha256": "bdfb38503ac514c8155f34f5400a62cf81649135abbe3760377d7e362cdb6567",
+      "rows": 30000,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "ProductOverview",
+      "file_name": "ProductOverview_5.csv",
+      "sha256": "7c670b9ee3dd5d0f3e15f23188920fbe27c4a137c26020250670f251ff6fd4f7",
+      "rows": 30000,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "ProductOverview",
+      "file_name": "ProductOverview_6.csv",
+      "sha256": "fb0143f090937251b63cd61c57195e714d5a3c59f9de88bb0d42bad23e60cc6a",
+      "rows": 30000,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "ProductOverview",
+      "file_name": "ProductOverview_7.csv",
+      "sha256": "fda39d1a29f019cd8e9a8def95721100ec8b814f00c75f6909121087807ed7d6",
+      "rows": 30000,
+      "acquired_on": "2026-01-10"
+    },
+    {
+      "table_name": "ProductOverview",
+      "file_name": "ProductOverview_8.csv",
+      "sha256": "8709dfbe4abef743a8e5c0707513d1df812fef5977dd18045d6f0ffe0f16776f",
+      "rows": 4780,
+      "acquired_on": "2026-01-10"
+    }
+  ],
+  "market_statuses": [
+    {
+      "status": "Off Market",
+      "records": 92821
+    },
+    {
+      "status": "On Market",
+      "records": 121959
+    }
+  ],
+  "code_sha256": {
+    "config/creatine_aliases.csv": "fa8396f165ddee69e7d6f9b53992d5f3120dde6fabdc513992c5963f17f02824",
+    "scripts/amounts.py": "418c37665a67ec85a8810cc2e2f0c0d0887b6798a7484b3e22e0c05f381022d9",
+    "scripts/analyze.py": "b39c07c81d9c118a7be6e5accc8d1fe096bb3d13a472d70446a99d285b314427",
+    "scripts/load_data.py": "a053c44a7af3b373ad97dab4affd1cabdfa4ca5500198b49009b64ca6a92191a",
+    "scripts/review_labels.py": "8579ef37356acba3968eb4243e18350ad8ebfedeb9384618df412d7145886083",
+    "scripts/verify_snapshot.py": "980efca6347c59a83025c5f2cb332c9edb318ee006933ac589176124c0c38338",
+    "sql/03_creatine_reference.sql": "0c7a5af0c356c407822d5b938d17e49a0ca8a12bdcab20707289edfe89b7cf81",
+    "sql/04_creatine_analysis.sql": "f93ad8b94b8d81174dcb1e7acad2d66ccfe9191a0ad2bf09c343587c4c03b408"
+  }
+}

@@ -1,0 +1,31 @@
+dsld_id,direction_type,notes
+287971,fixed_daily,Quarter teaspoon three times daily.
+270453,multiple_phases,Loading; maintenance range; and a separate schedule after day 28.
+37137,workout_with_ceiling,One scoop before exercise; at most two servings per day is a ceiling.
+278236,fixed_daily,Explicitly one serving per day.
+298693,fixed_daily,Once daily; one-serving limit.
+42293,workout_only,Two scoops after exercise; no rest-day schedule.
+300198,frequency_unspecified,Timing alternatives without a daily frequency.
+63175,fixed_daily,Six capsules daily.
+245694,workout_only,One scoop before training.
+294028,fixed_daily,Two capsules twice daily.
+264827,daily_range,One to two servings daily; timing depends on training day.
+326620,fixed_daily,Once daily; one-serving limit.
+6518,multiple_phases,Two servings in days 1-5; one thereafter.
+309327,fixed_daily,Explicitly one serving per day.
+79457,workout_with_ceiling,Before exercise; one-serving daily ceiling.
+332318,fixed_daily,One measuring spoon per day.
+17573,workout_only,Preparation alternatives; drink after exercise.
+296897,frequency_unspecified,Mixing directions only.
+332126,frequency_unspecified,Mixing directions and optional shake addition; no frequency.
+200650,workout_with_ceiling,Before activity; one-scoop daily ceiling.
+241758,workout_only,One scoop before activity.
+182515,multiple_phases,Alternative serving options plus loading and maintenance.
+2028,frequency_unspecified,During and after training; stacking instructions do not define a daily total.
+1312,variable_units,One to three scoops; initial tolerance adjustment and daily ceiling.
+268889,multiple_phases,Initial adaptation; variable servings and multiple use occasions.
+228193,workout_only,Four tablets before and four after training; no rest-day schedule.
+335126,workout_only,Before training; direction text names a different C4 variant than the product name.
+332824,variable_units,One scoop before exercise; half scoop for tolerance.
+232794,fixed_daily,One scoop daily; alternative practitioner instructions unspecified.
+18164,variable_units,Two to three scoops; tolerance adjustment and daily ceiling.

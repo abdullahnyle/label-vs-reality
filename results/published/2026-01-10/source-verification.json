@@ -1,0 +1,42 @@
+{
+  "saved_integrity": "ok",
+  "rebuilt_integrity": "ok",
+  "tables": {
+    "ProductOverview": {
+      "rows": 214780,
+      "raw_differences": {
+        "DSLD ID": 214780,
+        "Suggested Use": 7536,
+        "Bar Code": 28184,
+        "Brand Name": 231,
+        "Serving Size": 370,
+        "Net Contents": 100,
+        "Product Name": 114
+      },
+      "differences_after_normalization": {}
+    },
+    "DietarySupplementFacts": {
+      "rows": 2020130,
+      "raw_differences": {
+        "DSLD ID": 2020130,
+        "Amount Per Serving": 2004508,
+        "% Daily Value per Serving": 1312894,
+        "Amount Per Serving Unit": 566083,
+        "Daily Value Target Group": 654599,
+        "Serving Size": 1604,
+        "Ingredient": 391,
+        "Product Name": 1290
+      },
+      "differences_after_normalization": {}
+    }
+  },
+  "independent_amount_check": {
+    "matched_rows": 2529,
+    "matched_ids": 2163,
+    "records_checked": 2163,
+    "discrepancies": 0
+  },
+  "saved_sha256": "eff9fc163814ae799e0c4c985faac9d36dc6bd9c5ef5f839941bba2ddb5f457d",
+  "rebuilt_sha256": "0a4ad89d95a5041b1d08165c9313a09f56570d43b9afc6867e72365e8558f448",
+  "sources_unchanged": true
+}

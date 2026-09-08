@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="260" viewBox="0 0 760 260">
+<rect width="760" height="260" fill="white"/>
+<text x="20" y="30" font-family="sans-serif" font-size="18">DSLD CSV download 10 January 2026: on-market label records</text>
+<text x="20" y="95" font-family="sans-serif" font-size="15">at_least_3g</text>
+<rect x="170" y="75" width="202.82" height="30" fill="#266b80"/>
+<text x="387.82" y="95" font-family="sans-serif" font-size="15">648</text>
+<text x="20" y="150" font-family="sans-serif" font-size="15">below_3g</text>
+<rect x="170" y="130" width="83.88" height="30" fill="#b27332"/>
+<text x="268.88" y="150" font-family="sans-serif" font-size="15">268</text>
+<text x="20" y="205" font-family="sans-serif" font-size="15">unusable</text>
+<rect x="170" y="185" width="113.30" height="30" fill="#80858c"/>
+<text x="298.30" y="205" font-family="sans-serif" font-size="15">362</text>
+</svg>

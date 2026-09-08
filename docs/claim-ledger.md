@@ -1,77 +1,43 @@
-# Claim Ledger
+# Claim ledger
 
-This tracks the claims in this project that are solid enough to publish, versus the ones that are still open. Nothing here gets called VERIFIED just because it's been said a few times — it's VERIFIED only if it's been directly checked against the data.
+This ledger supersedes earlier notes in `docs/history/`. The current source is the
+10 January 2026 DSLD CSV download, reconciled with the supplied saved database.
 
----
+| Claim | Evidence | Status |
+|---|---|---|
+| 214,780 overview rows and 2,020,130 facts rows | Published source-verification.json and run.json | Reproduced; both databases pass integrity checks |
+| 2,529 matched rows; 2,163 matched IDs | matched_rows.csv; independent Decimal check | Reproduced on both inputs |
+| 1,278 on-market IDs: 648 at least 3 g, 268 below, 362 unusable | records.csv; expanded/on_market/max/3 row in sensitivity.csv | Reproduced |
+| 70.7% among 916 usable IDs; 28.3% missing in full cohort | Same tables | Reproduced arithmetic; not an efficacy measure |
+| Minimum selection gives 559 / 916 = 61.0% | expanded/on_market/min/3 sensitivity row | Reproduced; 89 threshold changes |
+| Explicit-wording comparison gives 648 / 911 = 71.1% | explicit_monohydrate/on_market/max/3 | Reproduced; wording does not establish chemistry |
+| Case-insensitive comparison gives 668 / 957 = 69.8% | case_insensitive/on_market/max/3; case_variants.csv | Reproduced; original list is not exhaustive |
+| 224 below-threshold names lack creatine; 44 contain it | records.csv name_group | Reproduced naming split only |
+| 1,196 / 1,278 Suggested Use entries populated | records.csv | Reproduced, 93.6%; populated does not mean readily interpretable |
+| Candidate forms: 25 capsules, 16 powders, two liquids, one wafer | candidate_review.csv; candidate_context.jsonl | Source-text review completed; replaces earlier 26/18 claim |
+| Candidate daily amounts are defensible for every label | Candidate decisions leave unclear entries blank | Not claimed; estimates are conditional on explicit recorded schedules |
+| 58 API labels agree on matched amounts | api_checks.csv; api_context.jsonl | Checked against retrieved API responses; not independent source validation |
+| Seven scanned labels inspected | docs/reviews/image-checks.csv | Targeted visual review, including two discrepancies |
+| The entire cohort is verified against original images | Only seven images reviewed | Not claimed |
+| Every creatine product is captured | Omitted names remain in unmatched_names.csv | Not claimed |
+| Products without creatine in the name are contamination | No supporting taxonomy | Withdrawn |
+| The original unseeded 30-entry sample is reproduced | Membership was never retained | Not claimed; new seeded sample reviewed separately |
 
-## The sample
+All result filenames above are under `results/published/2026-01-10/`, with review
+outputs in its `review/` folder. `run.json` records code/configuration hashes and
+all 16 CSV fingerprints. `source-verification.json` records the saved and rebuilt
+database hashes. The code tests cover synthetic failure cases; the real-data
+reconciliation is a separate check.
 
-Creatine analysis runs on `DietarySupplementFacts` joined to `ProductOverview` by DSLD ID, filtered to an exact list of 25 creatine monohydrate ingredient-name variants, on-market products only.
+The [ISSN reference](https://doi.org/10.1186/s12970-017-0173-z) discusses daily
+maintenance intake. The study's 3 g screen describes recorded amounts per serving;
+it does not establish effectiveness, intake, chemical identity or actual contents.
 
-`ProductOverview` has 214,780 rows and 214,780 distinct DSLD IDs — no duplicates at that level. Four tables total in the database: `ProductOverview`, `DietarySupplementFacts`, and two hand-built reference tables, `CreatineFormReference` and `MagnesiumFormReference`.
+Source discrepancy 337727 is retained unchanged in the primary outputs. Omitting
+it alone produces 648 / 915 = 70.8%; this is a limited sensitivity check, not an
+estimate of every possible source error. The serving-metadata issue at 551 does
+not alter its amount classification.
 
-One thing worth flagging: a single physical product can have more than one DSLD ID if it's listed at multiple serving sizes. That's real and it's been checked, not a bug.
-
-**Status: verified.**
-
----
-
-## Market status mattered more than expected
-
-DSLD keeps historical and discontinued labels alongside current ones. The first pass at this analysis didn't filter for that.
-
-Turns out 41% of the raw creatine match (885 of 2,163 products) is off-market. Restricting to on-market-only moved the effective-dose rate from about 66% to about 71%. That's a real shift, not a rounding difference, and it's the reason the number below supersedes the earlier one.
-
-**Status: verified.**
-
----
-
-## The headline number
-
-**About 71% of on-market creatine products with usable dose data have a recorded per-serving amount of at least 3g** — the low end of the ISSN's 3-5g/day maintenance-dose range (Kreider et al. 2017).
-
-This is a threshold description, not an efficacy claim. It says the labeled amount meets or exceeds 3g; it doesn't say the product works, gets absorbed, or matches what a user actually takes daily. It also doesn't distinguish 3g from 8g — only "at least 3g" from "under 3g."
-
-Exact figures: 1,278 on-market products. 648 hit ≥3g, 268 land under it, 362 have no usable dose data. 648 out of the 916 with real numbers is 70.7%.
-
-Unit parsing was checked against the actual unit strings in the data (`Gram(s)`, `mg`, `g`) — nothing fell through uncounted.
-
-**Status: verified. Replaces the earlier ~66% figure, which mixed on- and off-market products. Don't use the old number anywhere going forward.**
-
----
-
-## This measures per-serving amount, not daily dose, on purpose
-
-A capsule product might say 700mg per capsule and still add up to an effective dose if you're meant to take four a day. Checking that means reading `Suggested Use`, the field with the actual daily directions.
-
-That field is populated for 93.6% of on-market products (1,196 of 1,278), so it's not a coverage problem. It's a structure problem. A random sample of 30 populated entries turned up plain single doses, dose ranges that depend on training day or bodyweight, separate loading and maintenance phases with different amounts, and — on products where creatine is a minor ingredient in a bigger formula — directions with no creatine dosing information at all. There's no consistent shape to pull a single daily-gram number out of automatically without the result being biased toward whatever pattern the parser happens to catch, and reading all ~1,196 entries by hand wasn't done for this pass.
-
-Per-serving is what this analysis actually measures. Not being able to cleanly convert to daily dose is a real property of this dataset, not a step that got skipped.
-
-**Status: verified (the coverage figure, and the structural variety in the sample). The decision not to build a daily-dose figure from this is a deliberate scope choice, not an open question.**
-
----
-
-## Most of the "underdosed" signal isn't creatine underdosing
-
-Of the 268 on-market products under 3g, 224 of them (84%) aren't even named as creatine products. They're mass gainers, whey blends, and similar — creatine's just one ingredient among many, and it was never the point of the product. That's contamination from the ingredient-text match, not evidence that real creatine products are underdosed.
-
-Only 44 products are both named creatine and genuinely under 3g. Of those, 18 look like real, single-serving low-dose products — several cluster right around 2.5g, which matches a pattern already noticed earlier in the project (a handful of brands seem to intentionally dose just under the 3g line). The other 26 are capsule-format products; whether their true daily dose reaches 3g isn't established here, for the same reason described above — this project measures per-serving amount, not daily dose.
-
-**Status: verified on the counts. The 2.5g grouping is a reasonable read of the data, not independently confirmed — call it a pattern, not a fact.**
-
----
-
-## Why the on-market and mixed-population rates didn't quite match
-
-Earlier, the named-and-under-3g rate looked different on-market (16.4%) versus mixed on/off-market (12.1%), with no explanation. Checked it directly: off-market products are actually *more* dominated by contamination (92.2% not-named-creatine) than on-market ones (83.6%). Discontinued products skew more toward creatine-as-a-minor-ingredient formulas; what's still on shelves skews slightly more toward dedicated creatine products that happen to underdose. Mixing the two populations together diluted the on-market rate.
-
-**Status: verified. Real mechanism, not a coincidence.**
-
----
-
-## One loose end, left open on purpose
-
-**A magnesium glycinate product (DSLD ID 239649) lists the same ingredient twice**, identical in every column, with no explanation findable in the data. Checked twice, across two different database states, same result both times. This isn't a creatine finding, but it's the clearest example in this dataset of something that just doesn't have an answer, and it's worth keeping visible rather than quietly dropping it.
-
-**Status: open. Not blocking anything, just not pretending to be solved.**
+Reviews identify ChatGPT assistance and Abdullah's pending review. Nothing here
+asserts that Abdullah personally checked evidence he has not yet reviewed.
+Magnesium remains exploratory and its old duplicate question remains unresolved.

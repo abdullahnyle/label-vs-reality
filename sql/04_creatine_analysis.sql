@@ -1,247 +1,63 @@
--- Reproduces the on-market creatine finding reported in README.md and
--- docs/claim-ledger.md. Run against the same DSLD snapshot described in
--- scripts/load_data.md (214,780 rows in ProductOverview at time of writing).
---
--- This file picks up where sql/03_creatine_reference.sql leaves off. That
--- file establishes the ingredient alias list and the raw 2,529-row /
--- 2,163-product match. This file adds the market-status filter, the
--- one-row-per-product selection, and the dose-bucket classification that
--- the README's 71% figure is based on. None of that existed as committed
--- SQL before this file -- it lived in an interactive session and is
--- reproduced here exactly as it was run.
+-- Run through scripts/analyze.py, which registers strict amount parsing
+-- and loads the alias list. Only temporary tables are written.
+DROP TABLE IF EXISTS temp.CreatineRecords;
+DROP TABLE IF EXISTS temp.CreatineRows;
 
--- Step 1: confirm the ingredient match and market-status split.
--- Expected result at the time of writing: 2,163 distinct products total,
--- 1,278 on-market, 885 off-market.
-SELECT p.[Market Status], COUNT(*) AS row_count, COUNT(DISTINCT p.[DSLD ID]) AS distinct_products
+CREATE TEMP TABLE CreatineRows AS
+SELECT
+    f.rowid AS source_rowid,
+    f.[DSLD ID] AS dsld_id,
+    f.Ingredient AS ingredient,
+    f.[Amount Per Serving] AS raw_amount,
+    f.[Amount Per Serving Unit] AS raw_unit,
+    amount_status(f.[Amount Per Serving], f.[Amount Per Serving Unit]) AS parse_status,
+    amount_grams(f.[Amount Per Serving], f.[Amount Per Serving Unit]) AS grams
 FROM DietarySupplementFacts AS f
-JOIN ProductOverview AS p ON f.[DSLD ID] = p.[DSLD ID]
-WHERE f.[Ingredient] IN (
-    'Creatine Monohydrate',
-    'Creapure 100% Ultra Pure Creatine Monohydrate',
-    'Creapure 100% pure Creatine Monohydrate',
-    'Creapure Creatine Monohydrate',
-    'Creapure brand Creatine Monohydrate',
-    'Creapure(R) 100% Ultra Pure Concentrated Creatine Monohydrate',
-    'L-Creatine Monohydrate',
-    'Micro Creatine Monohydrate',
-    'Micronized Creatine Monohydrate',
-    'Micronized Pure Creatine Monohydrate',
-    'micronized Creapure Creatine Monohydrate',
-    'HPLC Pure Creatine Monohydrate',
-    'PharmaFuse(TM) Creatine Monohydrate',
-    'PharmaPure Creatine Monohydrate',
-    'OT2 Creatine Monohydrate',
-    'Creatine Monohydrate powder',
-    'Creatine monohydrate powder',
-    'Creatine Monohydrate; Micronized',
-    'Creatine Monohydrate; Instantized',
-    'Creatine Monohydrate; Powder',
-    'Creatine Monohydrate; Pure',
-    'Creatine; Micronized',
-    'Creatine Mono',
-    'instantized & micronized Creatine Monohydrate',
-    'ultrapure Creatine Monohydrate'
+JOIN CreatineAliases AS a ON f.Ingredient COLLATE BINARY = a.ingredient
+WHERE a.explicit_monohydrate = 1
+   OR (SELECT expanded FROM AnalysisOptions) = 1;
+
+CREATE INDEX temp.creatine_rows_id ON CreatineRows(dsld_id);
+
+CREATE TEMP TABLE CreatineRecords AS
+WITH quantities AS (
+    SELECT dsld_id,
+           COUNT(*) AS matching_rows,
+           COUNT(grams) AS usable_rows,
+           COUNT(*) - COUNT(grams) AS unresolved_rows,
+           COUNT(DISTINCT grams) AS distinct_amounts,
+           MIN(grams) AS min_grams,
+           MAX(grams) AS max_grams
+    FROM CreatineRows
+    GROUP BY dsld_id
+), ranked AS (
+    SELECT *, ROW_NUMBER() OVER (
+        PARTITION BY dsld_id
+        ORDER BY grams IS NULL, grams DESC, source_rowid
+    ) AS position
+    FROM CreatineRows
 )
-GROUP BY p.[Market Status]
-ORDER BY row_count DESC;
+SELECT q.*, r.source_rowid AS selected_source_rowid,
+       p.[Product Name] AS product_name,
+       p.[Market Status] AS raw_market_status,
+       CASE lower(trim(p.[Market Status]))
+           WHEN 'on market' THEN 'on_market'
+           WHEN 'off market' THEN 'off_market'
+           ELSE 'unknown'
+       END AS market_status,
+       p.[Suggested Use] AS suggested_use,
+       CASE
+           WHEN p.[Product Name] IS NULL OR trim(p.[Product Name]) = '' THEN 'missing_name'
+           WHEN lower(p.[Product Name]) LIKE '%creatine%' THEN 'name_contains_creatine'
+           ELSE 'name_without_creatine'
+       END AS name_group,
+       CASE
+           WHEN q.max_grams IS NULL THEN 'unusable'
+           WHEN q.max_grams < 3.0 THEN 'below_3g'
+           ELSE 'at_least_3g'
+       END AS threshold_category
+FROM quantities AS q
+JOIN ranked AS r ON q.dsld_id = r.dsld_id AND r.position = 1
+JOIN ProductOverview AS p ON q.dsld_id = p.[DSLD ID];
 
--- Step 2: check the actual unit strings present, before writing any
--- gram-conversion logic. Confirmed values at time of writing: 'Gram(s)',
--- 'mg', 'g', and blank. A silently unmatched unit string here would
--- misclassify real dose data as unusable -- this step exists specifically
--- to catch that before it happens, not as a formality.
-SELECT DISTINCT [Amount Per Serving Unit], COUNT(*) AS row_count
-FROM DietarySupplementFacts
-WHERE [Ingredient] IN (
-    'Creatine Monohydrate', 'Creapure 100% Ultra Pure Creatine Monohydrate',
-    'Creapure 100% pure Creatine Monohydrate', 'Creapure Creatine Monohydrate',
-    'Creapure brand Creatine Monohydrate',
-    'Creapure(R) 100% Ultra Pure Concentrated Creatine Monohydrate',
-    'L-Creatine Monohydrate', 'Micro Creatine Monohydrate',
-    'Micronized Creatine Monohydrate', 'Micronized Pure Creatine Monohydrate',
-    'micronized Creapure Creatine Monohydrate', 'HPLC Pure Creatine Monohydrate',
-    'PharmaFuse(TM) Creatine Monohydrate', 'PharmaPure Creatine Monohydrate',
-    'OT2 Creatine Monohydrate', 'Creatine Monohydrate powder',
-    'Creatine monohydrate powder', 'Creatine Monohydrate; Micronized',
-    'Creatine Monohydrate; Instantized', 'Creatine Monohydrate; Powder',
-    'Creatine Monohydrate; Pure', 'Creatine; Micronized', 'Creatine Mono',
-    'instantized & micronized Creatine Monohydrate', 'ultrapure Creatine Monohydrate'
-)
-GROUP BY [Amount Per Serving Unit]
-ORDER BY row_count DESC;
-
--- Step 3: the actual analysis unit.
---
--- A single DSLD ID can carry more than one row in DietarySupplementFacts if
--- the label offers more than one serving-size option (see the investigation
--- of IDs 182876, 209975, 268422 in sql/03_creatine_reference.sql -- every
--- nutrient scales proportionally across serving options on those labels,
--- confirming this is a real structural feature of DSLD, not an error).
---
--- Selection rule: one row per DSLD ID, keeping the row with the largest
--- Amount Per Serving on ties. This is a deliberate, documented choice, not
--- a general correction -- a product offering multiple legitimate serving
--- sizes hasn't misrepresented itself at any of them, and the largest
--- disclosed option is the clearest ceiling on what the label promises.
--- Selecting the minimum instead would lower the on-market effective-dose
--- rate; this is a real property of the selection rule, not a neutral
--- default, and should be stated as such wherever the result is reported.
---
--- "Distinct DSLD ID" is the analysis unit here. It is not automatically
--- the same thing as "distinct physical product" -- see the note above.
-WITH creatine_rows AS (
-    SELECT
-        f.[DSLD ID],
-        f.[Amount Per Serving],
-        f.[Amount Per Serving Unit],
-        p.[Product Name],
-        p.[Market Status],
-        p.[Suggested Use],
-        ROW_NUMBER() OVER (
-            PARTITION BY f.[DSLD ID]
-            ORDER BY f.[Amount Per Serving] DESC
-        ) AS rn
-    FROM DietarySupplementFacts AS f
-    JOIN ProductOverview AS p ON f.[DSLD ID] = p.[DSLD ID]
-    WHERE p.[Market Status] = 'On Market'
-    AND f.[Ingredient] IN (
-        'Creatine Monohydrate', 'Creapure 100% Ultra Pure Creatine Monohydrate',
-        'Creapure 100% pure Creatine Monohydrate', 'Creapure Creatine Monohydrate',
-        'Creapure brand Creatine Monohydrate',
-        'Creapure(R) 100% Ultra Pure Concentrated Creatine Monohydrate',
-        'L-Creatine Monohydrate', 'Micro Creatine Monohydrate',
-        'Micronized Creatine Monohydrate', 'Micronized Pure Creatine Monohydrate',
-        'micronized Creapure Creatine Monohydrate', 'HPLC Pure Creatine Monohydrate',
-        'PharmaFuse(TM) Creatine Monohydrate', 'PharmaPure Creatine Monohydrate',
-        'OT2 Creatine Monohydrate', 'Creatine Monohydrate powder',
-        'Creatine monohydrate powder', 'Creatine Monohydrate; Micronized',
-        'Creatine Monohydrate; Instantized', 'Creatine Monohydrate; Powder',
-        'Creatine Monohydrate; Pure', 'Creatine; Micronized', 'Creatine Mono',
-        'instantized & micronized Creatine Monohydrate', 'ultrapure Creatine Monohydrate'
-    )
-),
-deduped AS (
-    SELECT * FROM creatine_rows WHERE rn = 1
-),
-grams AS (
-    SELECT *,
-        CASE
-            WHEN [Amount Per Serving Unit] = 'mg' THEN [Amount Per Serving] / 1000.0
-            WHEN [Amount Per Serving Unit] IN ('g', 'Gram(s)') THEN [Amount Per Serving] * 1.0
-            ELSE NULL
-        END AS dose_grams
-    FROM deduped
-)
--- Step 4: the headline split. Reported in README.md as 648 / 268 / 362.
--- Categories are mutually exclusive and exhaustive over the 1,278 on-market
--- IDs by construction (every row falls into exactly one CASE branch).
---
--- Labeled here as threshold categories describing recorded label amounts,
--- not as "effective" or "ineffective" -- reaching >=3g/serving describes
--- where a record's declared amount falls relative to the ISSN maintenance
--- range, not a determination that the product works or is safe.
-SELECT
-    CASE
-        WHEN dose_grams IS NULL THEN 'unusable'
-        WHEN dose_grams >= 3.0 THEN 'at_least_3g'
-        ELSE 'below_3g'
-    END AS threshold_category,
-    COUNT(*) AS product_count
-FROM grams
-GROUP BY threshold_category
-ORDER BY threshold_category;
-
--- Step 5: composition of the below_3g group by whether the product name
--- mentions "creatine". This is a naming-pattern split, not a determination
--- of manufacturer intent or product category -- it describes what the name
--- contains, nothing more. Reported in README.md as 224 / 44.
-SELECT
-    CASE WHEN [Product Name] LIKE '%creatine%' THEN 'name_contains_creatine' ELSE 'name_without_creatine' END AS name_group,
-    COUNT(*) AS product_count
-FROM grams
-WHERE dose_grams < 3.0
-GROUP BY name_group
-ORDER BY name_group;
-
--- Step 6: Suggested Use coverage across the full on-market cohort, not just
--- the below-3g group. This is what determines whether a daily-dose (rather
--- than per-serving) analysis is blocked by missing data or by unstructured
--- text. Reported in README.md and docs/claim-ledger.md as 1,196 / 1,278
--- (93.6%) populated.
-SELECT
-    CASE WHEN [Suggested Use] IS NULL OR TRIM([Suggested Use]) = '' THEN 'blank' ELSE 'populated' END AS use_status,
-    COUNT(*) AS product_count
-FROM deduped
-GROUP BY use_status;
-
--- Step 7: market-status composition of the below-3g, name-based split,
--- run separately for on-market and off-market. This is what explains the
--- gap between the on-market named-under-3g rate (16.4%) and the earlier
--- mixed-population rate (12.1%) reported from sql/03_creatine_reference.sql.
--- Off-market products skew more toward names without "creatine" (92.2%)
--- than on-market products do (83.6%); mixing the two populations diluted
--- the on-market rate. This does not establish why any given product was
--- discontinued -- it describes composition, not cause.
-WITH all_creatine_rows AS (
-    SELECT
-        f.[DSLD ID],
-        f.[Amount Per Serving],
-        f.[Amount Per Serving Unit],
-        p.[Product Name],
-        p.[Market Status],
-        ROW_NUMBER() OVER (
-            PARTITION BY f.[DSLD ID]
-            ORDER BY f.[Amount Per Serving] DESC
-        ) AS rn
-    FROM DietarySupplementFacts AS f
-    JOIN ProductOverview AS p ON f.[DSLD ID] = p.[DSLD ID]
-    WHERE f.[Ingredient] IN (
-        'Creatine Monohydrate', 'Creapure 100% Ultra Pure Creatine Monohydrate',
-        'Creapure 100% pure Creatine Monohydrate', 'Creapure Creatine Monohydrate',
-        'Creapure brand Creatine Monohydrate',
-        'Creapure(R) 100% Ultra Pure Concentrated Creatine Monohydrate',
-        'L-Creatine Monohydrate', 'Micro Creatine Monohydrate',
-        'Micronized Creatine Monohydrate', 'Micronized Pure Creatine Monohydrate',
-        'micronized Creapure Creatine Monohydrate', 'HPLC Pure Creatine Monohydrate',
-        'PharmaFuse(TM) Creatine Monohydrate', 'PharmaPure Creatine Monohydrate',
-        'OT2 Creatine Monohydrate', 'Creatine Monohydrate powder',
-        'Creatine monohydrate powder', 'Creatine Monohydrate; Micronized',
-        'Creatine Monohydrate; Instantized', 'Creatine Monohydrate; Powder',
-        'Creatine Monohydrate; Pure', 'Creatine; Micronized', 'Creatine Mono',
-        'instantized & micronized Creatine Monohydrate', 'ultrapure Creatine Monohydrate'
-    )
-),
-all_deduped AS (SELECT * FROM all_creatine_rows WHERE rn = 1),
-all_grams AS (
-    SELECT *,
-        CASE
-            WHEN [Amount Per Serving Unit] = 'mg' THEN [Amount Per Serving] / 1000.0
-            WHEN [Amount Per Serving Unit] IN ('g', 'Gram(s)') THEN [Amount Per Serving] * 1.0
-            ELSE NULL
-        END AS dose_grams
-    FROM all_deduped
-)
-SELECT
-    [Market Status],
-    CASE WHEN [Product Name] LIKE '%creatine%' THEN 'name_contains_creatine' ELSE 'name_without_creatine' END AS name_group,
-    COUNT(*) AS product_count
-FROM all_grams
-WHERE dose_grams < 3.0
-GROUP BY [Market Status], name_group
-ORDER BY [Market Status], name_group;
-
--- Known open items not resolved by this file:
--- * DSLD ID 239649 (magnesium glycinate, unrelated to creatine) remains an
---   unexplained duplicate. See sql/01_magnesium_glycinate.sql. Note that the
---   query there selects four fields, not a complete row/label-image audit --
---   describe it as "repeated rows indistinguishable in the inspected fields,"
---   not as a fully audited duplicate.
--- * The 44-product name_contains_creatine-and-below-3g group has not been
---   individually row-audited beyond the serving-size-text read described in
---   docs/claim-ledger.md. Treat the 18/26 split there as a documented
---   observation, not a verified, re-auditable classification.
--- * Suggested Use text was sampled (30 populated entries, random, no fixed
---   seed recorded) to assess structure, not parsed at scale. See
---   docs/claim-ledger.md for what that sample showed and why full extraction
---   was not attempted this pass.
+CREATE UNIQUE INDEX temp.creatine_records_id ON CreatineRecords(dsld_id);

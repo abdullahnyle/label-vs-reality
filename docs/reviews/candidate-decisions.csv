@@ -1,0 +1,45 @@
+dsld_id,direction_type,units_per_recorded_serving,daily_units_min,daily_units_max,phase,notes
+2707,missing,,,,,No Suggested Use text; facts serving quantity is null.
+18777,frequency_unspecified,,,,,10 mL per use; no daily frequency specified.
+23068,fixed_daily,1,1,1,ordinary,2.5 g once daily.
+31651,frequency_unspecified,,,,,10 mL per use; no daily frequency specified.
+35999,daily_range,1,2,3,ordinary,One 2.5 tsp serving two to three times daily.
+56107,fixed_daily,1,1,1,ordinary,Quarter teaspoon daily; alternative practitioner direction is unspecified.
+57461,fixed_daily,2,6,6,ordinary,Two capsules with each of three meals.
+57463,fixed_daily,2,6,6,ordinary,Two capsules with each of three meals.
+57466,fixed_daily,2,6,6,ordinary,Two capsules with each of three meals.
+58289,missing,,,,,No Suggested Use text; facts serving quantity is null.
+64218,phase_range,2,4,6,normal_training,Two to three capsules twice daily; intense-training directions separately specify three times daily.
+64229,phase_range,2,4,6,normal_training,Two to three capsules twice daily; intense-training directions separately specify three times daily.
+64731,phase_range,3,3,5,maintenance,Three to five capsules daily after loading; loading instructions are not this estimate.
+71585,daily_range,4,4,8,training_day,One four-capsule serving; up to twice daily around exercise; rest-day frequency not established.
+183678,phase_range,3,3,5,maintenance,Three to five capsules daily after days 1-5 loading.
+183686,phase_range,3,3,5,maintenance,Three to five capsules daily after days 1-5 loading.
+211635,fixed_daily,1,2,2,ordinary,One 4 g scoop twice daily; 2.5 g recorded monohydrate per scoop.
+215240,fixed_daily,3,6,6,ordinary,Three capsules twice daily.
+215241,fixed_daily,3,6,6,ordinary,Three capsules twice daily.
+215649,fixed_daily,1,1,1,ordinary,One 2500 mg serving daily; alternative physician direction unspecified.
+228238,frequency_unspecified,,,,,One serving described; no explicit daily frequency.
+253763,fixed_daily,4,4,4,ordinary,Four capsules together provide 2800 mg; do not multiply 2800 mg by four again.
+253769,fixed_daily,4,4,4,ordinary,Four capsules together provide 2800 mg; do not multiply 2800 mg by four again.
+262856,fixed_daily,3,6,6,ordinary,Three capsules twice daily.
+262880,fixed_daily,3,6,6,ordinary,Three capsules twice daily.
+272452,fixed_daily,1,1,1,ordinary,One capsule daily.
+273606,fixed_daily,1,1,1,ordinary,Half-scoop serving daily.
+274287,phase_frequency_unclear,,,,,Loading specifies four servings daily; maintenance gives workout timing without a daily frequency. Other creatine forms are listed.
+276660,fixed_daily,2,4,4,ordinary,Two capsules twice daily.
+282205,fixed_daily,1,3,3,ordinary,Quarter-teaspoon serving three times daily.
+290441,fixed_daily,1,3,3,ordinary,Quarter-teaspoon serving three times daily.
+297713,fixed_daily,1,1,1,ordinary,One scoop daily. Other creatine forms are listed; this calculation concerns monohydrate only.
+299095,fixed_daily,1,1,1,ordinary,One capsule daily.
+302093,self_selected_frequency,,,,,Two capsules per use; repeat to a self-selected daily goal. No bounded daily intake.
+306204,fixed_daily,1,1,1,ordinary,One scoop daily. Other creatine forms are listed; product-name 3 g is not a 3 g monohydrate measurement.
+315559,frequency_unspecified,,,,,Workout timing without a stated daily frequency. Multiple creatine forms; do not sum compound masses as pure creatine.
+317721,fixed_daily,1,1,1,ordinary,One 500 mg capsule daily.
+319530,fixed_daily,4,8,8,ordinary,Four capsules twice daily.
+326503,workout_only,,,,,One scoop before/during/after exercise; daily frequency and rest-day schedule not specified.
+326504,workout_only,,,,,One scoop before/during/after exercise; daily frequency and rest-day schedule not specified.
+328409,fixed_daily,2,4,4,ordinary,Two capsules twice daily; 1000 mg belongs to the two-capsule serving.
+328853,fixed_daily,3,6,6,ordinary,Three capsules twice daily; training-day timing elaborates the same two servings.
+333418,fixed_daily,3,6,6,ordinary,Three capsules twice daily.
+337727,source_discrepancy,,,,,Scanned German daily-serving table shows 6.400 mg and 3.200 mg; CSV/API record 6.4 mg and 3.2 mg. Serving basis also differs. No daily conversion or automatic correction.

@@ -31,7 +31,9 @@ GROUP BY [DSLD ID]
 HAVING COUNT(*) > 1
 ORDER BY distinct_ingredient_text, [DSLD ID];
 
--- Finding: of the 11 duplicate IDs, 10 show a branded blend name
+-- Historical notes reported 10 blend-naming cases and one repeated-text case.
+-- The 11 excess rows alone do not establish the number of repeated IDs.
+-- The blend cases show a branded blend name
 -- (e.g. "Mag Sci Magnesium Glycinate Complex") alongside its own
 -- listed sub-ingredient line (e.g. "Magnesium Glycinate"). Both lines
 -- contain the matched text, so a single real ingredient gets counted
@@ -45,28 +47,28 @@ ORDER BY distinct_ingredient_text, [DSLD ID];
 --
 -- Net: the 136-row full-dataset count overstates distinct magnesium
 -- glycinate products by 11, almost entirely due to blend-naming
--- structure, not real duplication. 125 is the trustworthy product count.
+-- structure, not real duplication. 125 is the reported distinct matched-ID count.
 
 -- Follow-up, Aug 6: closing the open thread on DSLD ID 239649
 -- Flagged since Aug 5 as an unexplained duplicate: "Magnesium Glycinate"
 -- appears twice on this label, distinct from the 10 blend/complex cases
 -- (no "Complex" or blend name present here at all).
 --
--- Checked properly this time: pulled every column available for both
--- duplicate rows to see if anything actually distinguished them.
+-- Compared the four amount/category fields below. This is not a full
+-- source-row or label-image audit.
 SELECT [Amount Per Serving], [Amount Per Serving Unit],
        [% Daily Value per Serving], [DSLD Ingredient Categories]
 FROM DietarySupplementFacts
 WHERE [DSLD ID] = 239649
 AND [Ingredient] = 'Magnesium Glycinate';
 
--- Result: both rows are identical in every available column (400 mg,
+-- Reported result: both rows are identical in the inspected fields (400 mg,
 -- same unit, same category, nothing distinguishes them). No blend
 -- structure, no dosage split, nothing in the data explains why this
 -- line appears twice.
 --
--- Conclusion: this is a genuine, confirmed duplicate with no
--- discoverable cause from the data available. Whether it originates
+-- Conclusion: the inspected fields do not distinguish these rows.
+-- Full-row and label-image interpretation remains unresolved. Whether it originates
 -- from the manufacturer's label submission or from DSLD's own data
 -- entry can't be determined here, and that's the honest answer, not
 -- a gap to guess around.

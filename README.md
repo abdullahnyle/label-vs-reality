@@ -1,96 +1,113 @@
 # Label vs. Reality
 
-Where's the gap between what a supplement's label claims and what's actually
-worth taking? Which forms, doses, and products are underdosed, poorly
-absorbed, overpriced, or don't even contain what they say?
+A reproducible study of creatine amounts recorded in NIH's Dietary Supplement
+Label Database (DSLD). It asks how much the answer depends on ingredient matching,
+serving selection and missing data, then checks selected records against their
+source labels.
 
-Real product labels from NIH's Dietary Supplement Label Database (DSLD),
-214,780 labels, joined against a hand-built reference table of what actually
-works.
+## What the data show
 
----
+In the 10 January 2026 download, the original 25-name ingredient list matches
+2,163 label IDs. Of the 1,278 marked on-market, 916 have a usable amount and 362
+have none. Using each label's largest usable recorded amount, **648 of 916
+(70.7%) reach 3 g**. Using the smallest, **559 of 916 (61.0%) do**.
 
-## Creatine — first finding
+Those percentages describe recorded amounts. They do not measure effectiveness,
+actual contents or what someone takes daily. The missing 362 labels are 28.3% of
+the on-market cohort, and distinct label IDs are not necessarily distinct products.
 
-**About 71% of on-market creatine monohydrate products with usable dose data
-have a recorded per-serving amount of at least 3g, the low end of the
-ISSN's 3-5g/day maintenance-dose range (Kreider et al. 2017).**
+| Comparison | At least 3 g / usable labels | Share |
+|---|---:|---:|
+| Original names, maximum amount | 648 / 916 | 70.7% |
+| Original names, minimum amount | 559 / 916 | 61.0% |
+| Explicit-monohydrate names only, maximum | 648 / 911 | 71.1% |
+| Case-insensitive original names, maximum | 668 / 957 | 69.8% |
 
-That's a threshold description, not a claim that these products are
-"effective" — this project doesn't measure absorption, adherence, or real-
-world outcomes, only what's printed on the label relative to a published
-reference range. A product at 3g/serving matches the ISSN's low end; the
-range itself runs to 5g, and this figure doesn't distinguish 3g from 8g,
-only "at least 3g" from "under 3g."
+Case-insensitive matching adds 92 on-market IDs. The original list also omits
+other formulations and spellings; neither comparison represents every creatine
+product. The [case study](docs/creatine-case-study.md) explains the cohort and
+links each result to its evidence.
 
-That number came out of fixing two real methodology problems, not from a
-clean first pass.
+![Recorded label amounts](results/published/2026-01-10/amounts.svg)
 
-**Off-market labels were skewing the result.** DSLD includes historical and
-discontinued labels alongside current ones. The first pass at this analysis
-didn't filter for that. Off-market products turned out to be 41% of the raw
-ingredient match, and restricting to on-market-only moved the share hitting
-the 3g threshold from an initial ~66% to the ~71% figure above.
+## What changed after checking the sources
 
-**Most of what looked like low-dose creatine wasn't a real creatine product
-at all.** Filtering to products whose ingredient list matches "creatine
-monohydrate" exactly, mass gainers and whey blends that include a small
-amount of creatine as one ingredient among many show up in the same filter.
-Of the products landing under 3g, about 84% aren't even named as creatine
-products — they're contamination from other categories, not evidence that
-dedicated creatine products fall short of the threshold.
+The rebuilt pipeline reproduces the earlier 70.7% exactly. That supports the
+calculation, but the source review narrows its meaning:
 
-## What this doesn't establish
+- 89 on-market labels cross the threshold depending on minimum versus maximum
+  serving selection.
+- The 44 named, below-threshold candidates contain 25 capsule, 16 powder, two
+  liquid and one wafer records. The earlier 26/18 split was wrong.
+- A scanned label lists 2.5 g per two capsules, with instructions for those two
+  capsules at three meals. Another lists 2.8 g per four capsules taken once daily.
+  Capsule format alone cannot explain a below-threshold record.
+- Two scanned records expose serving metadata or numeric-notation discrepancies.
+  The raw data are retained, with the problems documented separately.
 
-This is a per-serving amount analysis, not a daily-dose analysis. Those are
-different questions. A capsule product listing 700mg per capsule isn't
-necessarily underdosed if the label recommends four capsules a day — that
-would be 2.8g, close to the reference range.
+The earlier interpretation that names without “creatine” represented contamination
+has been withdrawn. Blends can legitimately contain monohydrate. This study does
+not infer manufacturer intent or add together different creatine-compound masses.
 
-I looked into whether a daily-dose version of this analysis was possible.
-`Suggested Use` — the field that would give the real daily total — is
-populated for 93.6% of on-market products, so coverage isn't the blocker.
-The content is. A random sample of that field turned up single doses
-("take 2500mg daily"), dose ranges that vary by training day or bodyweight,
-separate loading and maintenance phases with different amounts each, and
-free text with no dosing information at all on products where creatine is
-a minor ingredient in a larger formula. There's no consistent structure to
-extract a single daily-gram figure from automatically without either
-building a parser whose coverage would be biased toward whichever text
-patterns it happens to catch, or reading every entry by hand.
+## Evidence and reproducibility
 
-I chose not to do either for this pass. A daily-dose figure built on biased
-automated parsing would look more rigorous than the per-serving figure
-above while actually being less trustworthy, and that's a worse outcome
-than stating the limitation plainly. Per-serving amount is what this
-analysis measures, and the reason it's not a daily-dose analysis is a
-finding in itself, not an oversight.
+The original database and a fresh import of all 16 source CSVs agree across
+214,780 overview rows and 2,020,130 facts rows after accounting for storage types,
+blank values and surrounding whitespace. Both pass SQLite integrity checks. An
+independent decimal-arithmetic check agrees with all 2,163 matched label summaries.
 
-## Still open
+The review includes 44 candidate text records, a reproducible 30-record Suggested
+Use sample, 58 live API comparisons and seven scanned-label checks. The automated
+API comparisons agree on matched amounts; agreement with an API is not image
+validation. Reviews were performed with ChatGPT assistance and await Abdullah's
+own review. This is a descriptive case study, not a fully adjudicated product audit.
 
-- One duplicate DSLD record (magnesium glycinate, ID 239649) with no
-  discoverable cause — flagged rather than quietly dropped.
+- [Results and row-level exports](results/published/2026-01-10/)
+- [Method and limitations](docs/methodology.md)
+- [Claim ledger](docs/claim-ledger.md)
+- [Source review and image evidence](docs/reviews/README.md)
+- [Preparation notes](docs/defending-the-analysis.md)
 
-See `docs/claim-ledger.md` for the full source and confidence breakdown
-behind every claim above.
+## Run it
 
-## Approach
+Use Python 3.10+ with SQLite 3.25+; no third-party Python packages are required.
+Keep the original CSV batches together in an otherwise empty folder.
 
-DSLD product and ingredient data loaded into SQLite across two tables:
-`ProductOverview` (product identity, market status, serving size) and
-`DietarySupplementFacts` (per-ingredient dose data), joined on DSLD ID.
-Reference doses come from a hand-built table (`CreatineFormReference`,
-`MagnesiumFormReference`) sourced from peer-reviewed and authoritative
-references, not manufacturer claims.
+```sh
+python scripts/load_data.py data/dsld/original-csv data/original-csv.db --acquired-on 2026-01-10
+python scripts/analyze.py data/original-csv.db results/local-run --dataset-label "DSLD CSV download 10 January 2026"
+python -m unittest discover -s tests -v
+```
 
-## Data
+The date above belongs to the supplied download's ReadMe. Use the actual date for
+a different snapshot. A fresh download may not reproduce these counts. The
+[loading guide](scripts/load_data.md) covers saved databases and provenance.
 
-Source: [DSLD](https://dsld.od.nih.gov). DSLD's own API is published under a
-[CC0 1.0 public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/),
-so redistribution isn't the issue — raw files aren't included here because
-of size, not licensing. See `scripts/load_data.md` to rebuild the database
-yourself.
+SQL handles matching, aggregation and serving selection. Python validates quantity
+text and exports the evidence. The runner opens the input read-only and refuses to
+overwrite an existing run. Its generated review queues start pending; completed
+review files are kept separately.
+
+## Scope and sources
+
+The 3 g threshold is motivated by the daily maintenance reference in
+[Kreider et al. (2017)](https://doi.org/10.1186/s12970-017-0173-z). That daily reference
+does not validate a per-serving effectiveness claim. Amounts above 5 g also count
+as “at least 3 g”; the category is not the 3-5 g range.
+
+[NIH DSLD](https://ods.od.nih.gov/Research/Dietary_Supplement_Label_Database.aspx)
+contains label information, including historical records. Snapshot market status
+is not live retail verification. This study cannot establish absorption, clinical
+benefit, price/value or national-market prevalence. Full daily-intake extraction
+and laboratory testing are outside its scope.
+
+The earlier magnesium SQL remains exploratory. Its chemical fractions are not
+applied to labeled magnesium amounts, and the duplicate investigation is unfinished.
 
 ## License
 
-MIT. See `LICENSE`.
+Project code and documentation: [MIT](LICENSE). The
+[DSLD API specification](https://api.ods.od.nih.gov/dsld/v9/) lists CC0 1.0. Raw
+archives and databases are excluded for size. Preserve NIH attribution and snapshot
+provenance. The project license does not relicense third-party label images or
+trademarks; image reviews link to the source PDFs.

@@ -1,0 +1,12 @@
+ingredient,source_rows,decision,reason
+CreaClear Microencapsulated Creatine Monohydrate,3,outside_original_list,Distinct microencapsulated wording; not admitted automatically.
+CreaPure Creatine Monohydrate,56,case_comparison,Case variant of an existing alias.
+Creatin Monohydrate,2,outside_original_list,Possible typo; would require an explicit new inclusion decision.
+Creatine Monohydrate & Creatine MagnaPOWER,5,outside_original_list,Combined-form name; cannot attribute its amount to monohydrate alone.
+Creatine Monohydrate & Creatine MagnaPower,1,outside_original_list,Combined-form name; cannot attribute its amount to monohydrate alone.
+Creatine Monohydrate HCL,1,outside_original_list,Ambiguous form wording.
+Creatine Monohydrate Micronized,2,outside_original_list,Unambiguous-looking wording beyond case-only changes; disclosed rather than silently added.
+Creatine Monohydrate Micronized powder:,3,outside_original_list,Additional wording/punctuation beyond the original names.
+Kre-Alkalyn Buffered Creatine Monohydrate,2,outside_original_list,Buffered formulation beyond the original names.
+Kre-Alkalyn buffered Creatine Monohydrate,6,outside_original_list,Buffered formulation beyond the original names.
+micronized Creatine Monohydrate,121,case_comparison,Case variant of an existing alias.
