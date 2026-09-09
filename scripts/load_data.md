@@ -1,22 +1,41 @@
-# Rebuilding the database
+# Loading the DSLD snapshot
 
-1. Download the full DSLD database as CSV from https://dsld.od.nih.gov 
-   (search page → Download → whole database → CSV).
-2. Unzip it. You'll get 8 numbered batches per table 
-   (ProductOverview_1 through _8, DietarySupplementFacts_1 through _8).
-3. Open DB Browser for SQLite, create a new database.
-4. Import batch 1 first, for both ProductOverview_1 and 
-   DietarySupplementFacts_1: File → Import → Table from CSV file. 
-   **Make sure "Column names in first line" is checked** — 
-   otherwise columns import as field1, field2... instead of real names.
-5. Rename the two imported tables to drop the _1 suffix: 
-   ProductOverview_1 → ProductOverview, 
-   DietarySupplementFacts_1 → DietarySupplementFacts.
-6. Import batches 2 through 8 the same way, but when the import 
-   dialog asks for the target table, select the existing 
-   ProductOverview or DietarySupplementFacts table instead of 
-   creating a new one. This appends each batch's rows into the 
-   same table rather than creating separate tables per batch.
-7. Verify the full import: SELECT COUNT(*) FROM ProductOverview; 
-   should return 214780, matching DSLD's stated total.
-8. Products and ingredients join on the shared DSLD ID column.
+Keep one download's CSV batches together in their own folder. Mixing downloads
+can combine different label versions without making the problem obvious.
+
+From the repository root:
+
+```sh
+python scripts/load_data.py data/dsld/original-csv data/supplements.db \
+  --acquired-on 2026-01-10
+```
+
+The date above belongs to the supplied January 2026 archive. Use the date recorded
+with a different download, or omit the option when it is unknown.
+
+The loader finds `ProductOverview*.csv` and `DietarySupplementFacts*.csv`
+recursively. It checks that batch headers agree, each row has the expected number
+of fields, DSLD IDs are present, ProductOverview IDs are unique and every facts
+row belongs to a product record. It retains the CSV values as text so strings
+such as `3,000` remain available for review.
+
+`ImportManifest` records each source filename, SHA-256 fingerprint, row count
+and acquisition date. The destination must be new. A failed import is discarded,
+and a file created at the destination while an import is running is not replaced.
+
+Check the result before analysis:
+
+```sql
+PRAGMA integrity_check;
+SELECT COUNT(*) FROM ProductOverview;
+SELECT COUNT(*) FROM DietarySupplementFacts;
+SELECT SUM(rows) FROM ImportManifest GROUP BY table_name;
+```
+
+The January archive contains 214,780 ProductOverview rows and 2,020,130 facts
+rows. Those counts identify this snapshot; they are not requirements for later
+DSLD downloads.
+
+The amount parser accepts positive scalar values in grams or milligrams. Missing
+values, ranges, inequalities, zeros and unfamiliar units stay unresolved for
+review rather than being converted to zero.

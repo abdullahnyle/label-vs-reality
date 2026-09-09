@@ -13,3 +13,7 @@ Thumbs.db
 .vscode/
 
 *.db-journal
+
+__pycache__/
+*.py[cod]
+results/

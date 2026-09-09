@@ -16,6 +16,5 @@ The source audit reproduced 70.7% using maximum recorded amounts and 61.0% using
 minimum amounts among usable on-market label IDs. Those are label-amount screens,
 not findings about effectiveness, actual contents or daily intake.
 
-See [the publication review](docs/publication-review.md) for what was corrected.
 Code and project documentation are covered by [MIT](LICENSE); third-party label
 images are not relicensed by this repository.
