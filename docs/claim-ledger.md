@@ -1,12 +1,12 @@
 # Claim status
 
-The complete analysis is preserved on `recovery/source-audit-76f8225` while its
-implementation is reintroduced in bounded, reviewed changes.
+The earlier analysis and source-review records are archived on
+`recovery/source-audit-76f8225`.
 
 The January snapshot calculation reproduced 648 / 916 = 70.7% using maximum
 recorded amounts, versus 559 / 916 = 61.0% using minimum amounts. Another 362 of
-1,278 on-market matched label IDs had no usable quantity. These calculations are
-not yet reproducible from the current `main` scripts alone.
+1,278 on-market matched label IDs had no usable quantity. The current scripts
+implement these calculations; reproduction requires the original January archive.
 
 Per-serving amounts do not establish daily intake or effectiveness. A product name
 without "creatine" does not establish contamination or manufacturer intent.

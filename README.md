@@ -3,10 +3,12 @@
 An undergraduate study of supplement label records from NIH's
 [Dietary Supplement Label Database](https://dsld.od.nih.gov).
 
-The creatine analysis is being reintroduced in small, reviewed changes after an
-oversized commit was removed. The files currently on `main` are exploratory;
-they do not yet reproduce the complete case study. Earlier claims about effective
-doses and product-name matches should not be used.
+The Python workflow imports the snapshot, matches declarations and compares
+minimum/maximum recorded amounts
+per label ID. See [reproduction instructions](scripts/load_data.md) and the
+[amount-selection check](docs/creatine-amount-selection.md). The SQL files remain
+historical exploration, not the supported workflow. The case study is still in
+progress; the analysis does not support effectiveness or product-name claims.
 
 The completed snapshot analysis and its evidence are preserved on
 [the recovery branch](https://github.com/abdullahnyle/label-vs-reality/tree/recovery/source-audit-76f8225).

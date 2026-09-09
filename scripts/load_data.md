@@ -65,3 +65,22 @@ unresolved quantities. `source_rowid` identifies a row in this exact database,
 not a stable identifier across reimports. No serving selection, daily-dose
 calculation or product-level conclusion is made by this step. The database is
 opened read-only, and the scripts use Python's standard library.
+
+## Comparing recorded amounts per label
+
+```sh
+python scripts/creatine_labels.py data/supplements.db --summary
+python scripts/creatine_labels.py data/supplements.db --summary --ignore-case
+python scripts/creatine_labels.py data/supplements.db > results/creatine-label-amounts.csv
+python -m unittest discover -s tests -v
+```
+
+The CSV includes all matched label IDs; the JSON summary includes only exact
+`On Market` status in the snapshot, not independently verified current sales.
+Amounts are converted before taking minima/maxima, never summed. Ties retain
+every contributing source row ID for lookup in the matching export. A label
+with both usable and unresolved declarations is marked `partial`; its bounds
+describe only the usable subset. An entirely unresolved label has blank bounds,
+not zero. `complete` means all matched quantities parsed, not that a label was
+reviewed or its serving basis validated. See the
+[selection check](../docs/creatine-amount-selection.md) for counts and limitations.

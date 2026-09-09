@@ -1,3 +1,7 @@
+-- Historical exploration only. Use scripts/creatine_labels.py instead:
+-- this SQL ranks raw amounts before unit conversion, and later statements
+-- reference CTEs outside their scope. Its old reproduction claims below
+-- are preserved as historical notes, not current instructions.
 -- Reproduces the on-market creatine finding reported in README.md and
 -- docs/claim-ledger.md. Run against the same DSLD snapshot described in
 -- scripts/load_data.md (214,780 rows in ProductOverview at time of writing).
