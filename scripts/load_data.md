@@ -39,3 +39,29 @@ DSLD downloads.
 The amount parser accepts positive scalar values in grams or milligrams. Missing
 values, ranges, inequalities, zeros and unfamiliar units stay unresolved for
 review rather than being converted to zero.
+
+## Matching creatine declarations
+
+With the imported database in place, export the recorded ingredient rows:
+
+```sh
+mkdir -p results
+python scripts/creatine_matches.py data/supplements.db > results/creatine-exact.csv
+python scripts/creatine_matches.py data/supplements.db --ignore-case > results/creatine-case-variants.csv
+```
+
+The default uses the 25 names from the historical SQL, matched exactly even if
+the input database has a case-insensitive ingredient column. `--ignore-case`
+allows ASCII capitalization differences in those same names. It does not use
+substring or fuzzy matching. Rows added by this option have `case_variant` in
+the `alias_match` column; neither spelling nor quantity is changed in the source.
+
+`explicit_monohydrate` describes the ingredient wording only. The historical
+names `Creatine Mono` and `Creatine; Micronized` do not spell out monohydrate;
+they remain identifiable rather than being treated as chemical confirmation.
+
+Each export retains all matched declarations, including repeated DSLD IDs and
+unresolved quantities. `source_rowid` identifies a row in this exact database,
+not a stable identifier across reimports. No serving selection, daily-dose
+calculation or product-level conclusion is made by this step. The database is
+opened read-only, and the scripts use Python's standard library.
