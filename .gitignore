@@ -1,6 +1,7 @@
-# Raw data — large, third-party, re-downloadable from dsld.od.nih.gov
+# Raw source files; retain the original archive to reproduce historical counts.
 data/dsld/
 *.csv
+!data/creatine-review/*.csv
 
 # The SQLite database — regenerable from CSVs + load procedure
 *.db

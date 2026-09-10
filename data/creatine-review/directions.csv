@@ -1,0 +1,45 @@
+dsld_id,source_sha256,source_rowid,scope,units_per_serving,daily_units_min,daily_units_max,unit,reason
+183678,2dfd31fc958ca87a45b2fcb4f01e094cb44a3a27a513d3008ab5c1e35aac813b,927487,maintenance,3,3,5,capsules,Use days 6 onward only; the separate loading instruction is seven capsules four times daily.
+183686,09bfab06b08d05bbcc9ab3056a6b13cc9c1596eeef4fc5ea25526daa8a6538d9,927505,maintenance,3,3,5,capsules,Use days 6 onward only; do not average loading and maintenance.
+18777,d48cdaeb6fc464ec5db974e4b99c4f774ec3bd73f0547f83360bd60690302ef3,,frequency_unspecified,,,,,A 10 mL administration is specified but no daily frequency.
+211635,0d502a3756c39121a5d46f48c37eeb6b5002f9e8587eb7cb80aa4f1f018fc037,1060420,daily,4,8,8,grams of powder,One 4 g scoop twice daily; calculate only the declared monohydrate component of HMB+ Creatine.
+215240,d71eb9966a05b4847c398b6762edc1b8a265fc3aa2b64c495ab90b2c323d3a24,1092832,daily,3,6,6,capsules,Three capsules twice daily; before and after exercise is preferred timing.
+215241,6104b83a6e21acaabcc626b1799b0cb6d40f116629ea0881e2e1b57cec548e36,1092833,daily,3,6,6,capsules,Three capsules twice daily; retain this label ID separately from similar versions.
+215649,2a549c5762295a8675886fb50bc1e7b598252d4add196e78ddf030b9a30e1e95,1095098,daily,2.5,2.5,2.5,grams of powder,Use the explicit 2500 mg daily default; physician-directed alternatives are unspecified.
+228238,862e968d012924a804e66bd02a530f53147d0d0e336bbe8f7669c7a5de4811b5,,frequency_unspecified,,,,,One serving is described but daily repetition is not stated.
+23068,7e1d55f27446406d78b6fd4a93638ab2a005e336ad4dc0e4bb3404c7da05a27f,216280,daily,2500,2500,2500,milligrams of powder,The explicit 2.5 g daily direction equals the listed 2500 mg serving.
+253763,7c868c240fc5d9d8acfbdceb36248ac5a386924629b5b59e5e83285ceff426e5,1391032,daily,4,4,4,capsules,Four capsules daily equals one 2800 mg serving; physician alternatives have no numeric schedule.
+253769,9be94d05d04f3f713d84df46428d69820e2f076f04e9bfeeb3cfb08b0808c931,1391038,daily,4,4,4,capsules,Four capsules daily equals one serving; do not multiply 2800 mg by four again.
+262856,457e38668b083f7fd1cb50dbe8feae3cb226e4f8b9edaa393fb84f565f789350,1464223,daily,3,6,6,capsules,Three capsules twice daily; exercise wording describes preferred timing.
+262880,22c61a46c7fb77bc5bbdc496d58e205a35234281ce4cd8168a37f009c1ce3b2b,1464374,daily,3,6,6,capsules,Three capsules twice daily; no requirement to assume two workouts.
+2707,beaa4e055e04055d8b850777bdd6a1ab70303fcb17b69697bab5b4cb6ee1998c,,missing_directions,,,,,Suggested Use is blank and facts serving quantity is null; no daily estimate.
+272452,f9b184960da7217c3fa78ad360485fb2d4502df08ca6c9c46f94749ee8f4c0d9,1544900,daily,1,1,1,capsules,Use one capsule daily as written; practitioner alternatives remain unspecified.
+273606,ff4a8213a138fb10c1f2e8006329436eefb1a5ab7a7adaff571163b667d9b367,1557387,daily,2.5,2.5,2.5,grams of powder,Half scoop is approximately 2.5 g and is directed daily; use that default only.
+274287,f6d5040757a03679e407474c88f95137d41ce5b5c385b0eff141a835a5e7478b,,workout_only,,,,,Maintenance is tied to workout timing without an explicit daily frequency; loading is separate. Other creatine forms are not added to monohydrate.
+276660,78e711b93a97a566a5491c4281d99d6aae3b048b269ef697f52ffeb06f8423d6,1587081,daily,2,4,4,capsules,Two capsules with a meal twice daily equals two listed servings.
+282205,ae9d4177a1834433ec67d5e37bab8165b06a1a729e1eb8f5456af5338326e6e9,1621252,daily,0.25,0.75,0.75,teaspoons,Quarter teaspoon three times daily equals three listed servings.
+290441,e0460bd842c5a3b6fda592413315f79dcb6265d05a24c86b281cfddc7addfbc6,1665224,daily,0.25,0.75,0.75,teaspoons,Quarter teaspoon three times daily; calculation uses the 1000 mg ingredient declaration.
+297713,b595b94dc9ddf4c8ceaa9c6aaadd3dc4524beacd92aeac6264642e30046fe08a,1718287,daily,5,5,5,grams of powder,One scoop is 5 g of powder daily; count only 2000 mg monohydrate and exclude other creatine forms.
+299095,dae0af06c8a96d744f5235f530a73cad9c9c2084798a3fa03640521665eeae4f,1734605,daily,1,1,1,capsules,Use one capsule daily; practitioner alternatives have no explicit quantity.
+302093,6d4f8b311dc803ecdbac198e8b65fc030bc30a0bc700a7a86c524b235fa99b6d,,self_selected,,,,,Users choose repetition to reach their own intake goal; no fixed daily amount follows.
+306204,ef4b378f1134d12822177c35e125c2fe84b374a58a5ac6e0159e27b6332eba28,,serving_uncertain,,,,,Directions specify one scoop daily but the reviewed CSV excerpt does not map a scoop to its 5 g serving. The product name is not an ingredient amount.
+315559,c74d4756efb1fa107073e22098d50ba7d4c1491233a988f55a4a201ecd19a4f8,,workout_only,,,,,Mixing and workout timing are described without an explicit quantity or daily frequency; other creatine forms are present.
+31651,92a454c108ac8aae94289f706e27868845f8a1e27ac52783a2bcded28ba50b5e,,frequency_unspecified,,,,,A 10 mL administration is described but no daily frequency.
+317721,ce12d071c748dad8992e8ce673ea33abba7a04117fcbd2a41061c7f91eb1eadd,1864537,daily,1,1,1,capsules,Use the one-capsule daily default; physician-directed alternatives are unspecified.
+319530,c30f3fbf28d7ed26b86a7956317b5476e9ca9f87d63d2309fd7b76d82c9e324a,1881110,daily,4,8,8,capsules,Four capsules twice daily equals two 2200 mg servings.
+326503,cfdb00e1844e2233cf3d1241bd3caf416b23a253a6ffbd7b8ad46642cadf9d64,,workout_only,,,,,One scoop before during or after exercise does not specify daily or non-training-day intake.
+326504,b33a501849a820766c50c127c31cad10478919a8c24c36c03d04a72f1c42a7a8,,workout_only,,,,,One scoop around exercise; no daily schedule is supplied.
+328409,bb02900e0a9bc454d92274f0c03e8670bf104b7da0ac64c06649bf0f5e1e7d21,1954935,daily,2,4,4,capsules,Two capsules twice daily equals two 1000 mg servings; practitioner alternatives are unspecified.
+328853,6351674c61409ddcafe35151599e2a2afb3fa24c128007d66facae0e4d21ec1e,1958070,daily,3,6,6,capsules,Three capsules twice daily is explicit; training days change the timing only.
+333418,f46e9d4b1fef3fb25b9d056f538546238f1409041dcaeab2473b0b33b7e88a79,1985337,daily,3,6,6,capsules,Three capsules twice a day equals two 2500 mg servings; practitioner alternatives are unspecified.
+337727,5a48a00e425ccda6cd04a32906bc1eb2565db8feef69f6ddd72ad4393658a921,,source_conflict,,,,,Raw 6.4 and 3.2 mg declarations conflict with the saved image's punctuation and daily-serving table; do not infer a corrected daily quantity.
+35999,b3c2b5e9afc610e1cadd6963268589c30d521b20c099e71a8965b40016eb7360,345681,daily,2.5,5,7.5,teaspoons,Two and a half teaspoons two to three times daily; count only monohydrate in the ribose product.
+56107,65335e0aae12d7f9d123adbf6dca4af53d3e3a74a252c61b4a9c86ae5f5bfc8e,548386,daily,0.25,0.25,0.25,teaspoons,Quarter teaspoon daily is one 750 mg serving; professional alternatives are unspecified.
+57461,0985e87078b30e50472f6cb90177a381432cc059275f7a064fce3ce8d0cd462e,560717,daily,2,6,6,capsules,Two capsules at each of morning afternoon and evening meals gives three servings.
+57463,9847610d65472ea20c45d06c0251c749d6b04c99d04d4474ceff25bcbd11e98e,560722,daily,2,6,6,capsules,Two capsules at three named meals gives six capsules across the stated day.
+57466,d0f6c54ddf1ae872596d1c436f02664baf0d36c32f411f9c2208e7d5ace0f4a4,560760,daily,2,6,6,capsules,Two capsules at three named meals; do not use the amount per serving as a daily total.
+58289,d835b200d66270b3a245068cd63477799157c9f74b0856f07b8168e8a2a5fc46,,missing_directions,,,,,Suggested Use is blank; facts also show null scoop quantity and other creatine forms.
+64218,fbd0c1e64f0e1a75163caa9f7e522bea8d6f3c6c7044d95a516d58caee1d722b,616950,normal_training,2,4,6,capsules,Use the normal-training instruction of two to three capsules twice daily. Intense training specifies three times daily and is not pooled.
+64229,63e466777bb25e36211d03b3d3f21dc2deb670060092a50813eea39219b5c0a2,617057,normal_training,2,4,6,capsules,Use normal training only; the separate competition schedule would give a different range. Do not add the performance blend.
+64731,7578031869bbf0e4430e53a7a6c15d648f16606b6ed867e8ddd1106f4bffd5ce,624346,maintenance,3,3,5,capsules,Use maintenance days 6 onward and the three-capsule facts serving; loading is separate.
+71585,06751838f5357f4ce41aa982ea0d4f694d8a21fe490358e9f05e4ceabd2ed812,,workout_only,,,,,One four-capsule serving around exercise up to twice daily is conditional; no universal daily schedule. A separate unmatched heading has a blank amount.
