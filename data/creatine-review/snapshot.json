@@ -1,0 +1,8 @@
+{
+  "database_sha256": "0a4ad89d95a5041b1d08165c9313a09f56570d43b9afc6867e72365e8558f448",
+  "integrity": "ok",
+  "product_rows": 214780,
+  "facts_rows": 2020130,
+  "source_files": 16,
+  "orphaned_facts": 0
+}

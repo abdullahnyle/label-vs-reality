@@ -84,3 +84,49 @@ describe only the usable subset. An entirely unresolved label has blank bounds,
 not zero. `complete` means all matched quantities parsed, not that a label was
 reviewed or its serving basis validated. See the
 [selection check](../docs/creatine-amount-selection.md) for counts and limitations.
+
+## Directions, images and compact results
+
+The bounded review can be inspected without the full database:
+
+```sh
+python scripts/creatine_directions.py
+python scripts/creatine_label_checks.py
+```
+
+To check selection and saved excerpts against the original import, then rebuild
+all compact counts:
+
+```sh
+python scripts/creatine_directions.py --database data/supplements.db
+python scripts/creatine_results.py data/supplements.db --output results/reproduced
+```
+
+Compare `amount-screens.csv`, `review-counts.json`, `snapshot.json` and
+`source-files.csv` in that output with [the saved results](../data/creatine-review/).
+The output directory must be new; an existing directory is never overwritten.
+For another run, choose a different path with `--output`.
+The results script opens the database read-only, checks integrity, checks review
+excerpts against it and verifies its fingerprint is unchanged after analysis.
+The database hash is specific to this rebuild; semantic agreement and per-file
+CSV fingerprints matter too if a different SQLite version changes the file layout.
+
+API and image evidence came from separately saved DSLD responses. If those exact
+files are available under `data/dsld/live-labels/ID.json` and
+`data/dsld/label-pdfs/ID.pdf`, verify them with:
+
+```sh
+python scripts/creatine_label_checks.py --source-dir data/dsld
+```
+
+This checks API extraction and API/PDF hashes, not the correctness of a visual
+reading. URLs and fingerprints are in
+[label-checks.jsonl](../data/creatine-review/label-checks.jsonl). Their original
+retrieval timestamps are unknown. Later downloads may differ and cannot silently
+replace these sources. Third-party PDFs are linked rather than committed.
+
+Small source excerpts and review decisions are included with the repository.
+The full original January archive is retained separately and is needed for
+end-to-end reproduction. The public DSLD homepage does not guarantee access to
+that exact old export. This limits independent reproduction if the archive is
+unavailable, even though the review arithmetic can still be inspected offline.

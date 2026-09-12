@@ -40,9 +40,10 @@ descriptive screen retained for comparison with the earlier analysis, not a
 newly validated clinical decision threshold.
 
 Suggested Use coverage counts only nonblank database text. It does not establish
-that daily directions are interpretable. A bounded, traceable directions review
-and targeted image inspection remain the next evidence dependency; no broad
-label audit or daily-dose conclusion follows from this table.
+that daily directions are interpretable. The separate
+[directions review](creatine-directions.md) and [image checks](creatine-label-checks.md)
+examine a bounded selection; no broad label audit or daily-dose conclusion
+follows from this table.
 
 The January inputs are supplied research files, not committed to this repository.
 Keep ProductOverview_1.csv through _8 and DietarySupplementFacts_1.csv through

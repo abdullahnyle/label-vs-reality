@@ -1,0 +1,22 @@
+{
+  "reviewed_labels": 44,
+  "bands": {
+    "at_least_3g": 17,
+    "below_3g": 11,
+    "crosses_3g": 3,
+    "unresolved": 13
+  },
+  "scopes": {
+    "daily": 26,
+    "frequency_unspecified": 3,
+    "maintenance": 3,
+    "missing_directions": 2,
+    "normal_training": 2,
+    "self_selected": 1,
+    "serving_uncertain": 1,
+    "source_conflict": 1,
+    "workout_only": 5
+  },
+  "image_checked_labels": 7,
+  "csv_api_amount_agreements": 7
+}

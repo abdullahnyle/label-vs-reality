@@ -91,8 +91,9 @@ def review_rows(records, decisions):
 
 
 def load_review(folder=REVIEW):
-    records = [json.loads(line) for line in (folder / "directions-source.jsonl").read_text().splitlines()]
-    with (folder / "directions.csv").open(newline="") as stream:
+    records = [json.loads(line) for line in
+               (folder / "directions-source.jsonl").read_text(encoding="utf-8").splitlines()]
+    with (folder / "directions.csv").open(newline="", encoding="utf-8") as stream:
         decisions = list(csv.DictReader(stream))
     return records, decisions
 

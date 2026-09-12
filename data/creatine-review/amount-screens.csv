@@ -1,0 +1,17 @@
+matching,population,threshold_g,labels,usable,unresolved,partial,min_at_least,max_at_least,crosses
+exact,all,3,2163,1576,587,4,925,1038,113
+exact,all,2.5,2163,1576,587,4,1073,1115,42
+exact,on_market,3,1278,916,362,2,559,648,89
+exact,on_market,2.5,1278,916,362,2,666,694,28
+exact,off_market,3,885,660,225,2,366,390,24
+exact,off_market,2.5,885,660,225,2,407,421,14
+exact,other_status,3,0,0,0,0,0,0,0
+exact,other_status,2.5,0,0,0,0,0,0,0
+ascii_case_insensitive,all,3,2329,1672,657,4,973,1087,114
+ascii_case_insensitive,all,2.5,2329,1672,657,4,1138,1180,42
+ascii_case_insensitive,on_market,3,1370,957,413,2,578,668,90
+ascii_case_insensitive,on_market,2.5,1370,957,413,2,698,726,28
+ascii_case_insensitive,off_market,3,959,715,244,2,395,419,24
+ascii_case_insensitive,off_market,2.5,959,715,244,2,440,454,14
+ascii_case_insensitive,other_status,3,0,0,0,0,0,0,0
+ascii_case_insensitive,other_status,2.5,0,0,0,0,0,0,0

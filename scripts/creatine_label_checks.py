@@ -46,7 +46,8 @@ def amount_pairs(record, api):
 
 
 def check_labels(folder=REVIEW, source_dir=None):
-    records = [json.loads(line) for line in (folder / "label-checks.jsonl").read_text().splitlines()]
+    records = [json.loads(line) for line in
+               (folder / "label-checks.jsonl").read_text(encoding="utf-8").splitlines()]
     ids = [record["csv"]["dsld_id"] for record in records]
     if len(set(ids)) != len(ids):
         raise ValueError("Duplicate label checks")
@@ -65,7 +66,7 @@ def check_labels(folder=REVIEW, source_dir=None):
             for path, expected in ((api_path, record["api_sha256"]), (pdf_path, record["pdf_sha256"])):
                 if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
                     raise ValueError(f"Saved source fingerprint differs: {path.name}")
-            if api_excerpt(json.loads(api_path.read_text())) != record["api"]:
+            if api_excerpt(json.loads(api_path.read_text(encoding="utf-8"))) != record["api"]:
                 raise ValueError(f"API excerpt differs for {label_id}")
     return {"checked_ids": ids, "amount_agreements": len(ids),
             "source_files_verified": source_dir is not None}

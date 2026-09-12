@@ -6,13 +6,9 @@ An undergraduate study of supplement label records from NIH's
 The Python workflow imports the snapshot, matches declarations and compares
 minimum/maximum recorded amounts
 per label ID. See [reproduction instructions](scripts/load_data.md) and the
-[amount-selection check](docs/creatine-amount-selection.md). The SQL files remain
-historical exploration, not the supported workflow. The case study is still in
-progress; the analysis does not support effectiveness or product-name claims.
-
-The completed snapshot analysis and its evidence are preserved on
-[the recovery branch](https://github.com/abdullahnyle/label-vs-reality/tree/recovery/source-audit-76f8225).
-That branch is an archive, not the current supported workflow.
+[amount-selection check](docs/creatine-amount-selection.md). The SQL files retain exploratory counts and reference queries. The
+[case study](docs/creatine-case-study.md) connects the recorded amounts to the
+directions and image reviews; it does not establish effectiveness or product contents.
 
 The source audit reproduced 70.7% using maximum recorded amounts and 61.0% using
 minimum amounts among usable on-market label IDs. Those are label-amount screens,

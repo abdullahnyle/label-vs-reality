@@ -1,2 +1,11 @@
+# Keep code and research text consistent across platforms.
+* text=auto
+*.py text eol=lf
+*.sql text eol=lf
+*.md text eol=lf
+*.csv text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+
 *.sql linguist-detectable=true
 *.sql linguist-language=SQL
