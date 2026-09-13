@@ -1,5 +1,10 @@
 # Loading the DSLD snapshot
 
+Use Python 3.11 or newer. The workflow uses only the standard library; there
+are no packages to install. Commands below use a POSIX shell. In PowerShell,
+put the import command on one line and replace `mkdir -p results` with
+`New-Item -ItemType Directory -Force results`.
+
 Keep one download's CSV batches together in their own folder. Mixing downloads
 can combine different label versions without making the problem obvious.
 
@@ -110,6 +115,22 @@ The results script opens the database read-only, checks integrity, checks review
 excerpts against it and verifies its fingerprint is unchanged after analysis.
 The database hash is specific to this rebuild; semantic agreement and per-file
 CSV fingerprints matter too if a different SQLite version changes the file layout.
+
+To inspect differences from the four saved result files, run these commands
+from the repository root:
+
+```sh
+git diff --no-index data/creatine-review/amount-screens.csv results/reproduced/amount-screens.csv
+git diff --no-index data/creatine-review/review-counts.json results/reproduced/review-counts.json
+git diff --no-index data/creatine-review/snapshot.json results/reproduced/snapshot.json
+git diff --no-index data/creatine-review/source-files.csv results/reproduced/source-files.csv
+```
+
+Each command prints nothing and exits zero if the files agree, or shows a diff
+and exits one if they differ. A different database hash alone can reflect SQLite
+layout differences; compare counts and CSV fingerprints before interpreting it
+as a changed input. Do not overwrite the saved reference results just to make
+a comparison pass.
 
 API and image evidence came from separately saved DSLD responses. If those exact
 files are available under `data/dsld/live-labels/ID.json` and
