@@ -3,6 +3,7 @@ import sqlite3
 import sys
 import tempfile
 import unittest
+from contextlib import closing
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
@@ -71,7 +72,7 @@ class SnapshotImportTests(unittest.TestCase):
         result = load_snapshot(self.source, database, "2026-01-10")
 
         self.assertEqual(len(result["sha256"]), 64)
-        with sqlite3.connect(database) as connection:
+        with closing(sqlite3.connect(database)) as connection:
             product = connection.execute(
                 "SELECT [DSLD ID], [Suggested Use] FROM ProductOverview"
             ).fetchone()
@@ -133,7 +134,7 @@ class SnapshotImportTests(unittest.TestCase):
         database = self.folder / "snapshot.db"
         load_snapshot(self.source, database)
 
-        with sqlite3.connect(database) as connection:
+        with closing(sqlite3.connect(database)) as connection:
             stored = connection.execute(
                 "SELECT [Suggested Use] FROM ProductOverview"
             ).fetchone()[0]
