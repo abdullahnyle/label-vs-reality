@@ -29,7 +29,24 @@ historical exploration; the statements below supersede their interpretation.
 
 ## Still unresolved
 
-Thirteen selected labels have no supported daily calculation under these rules.
-ID 337727 remains uncorrected in the raw screen. ID 306204 lacks a scoop mapping
-in the reviewed CSV excerpt. No claim is made about unreviewed images, independent
+Thirteen of the 44 reviewed labels do not support a reliable daily calculation
+under these rules.
+
+ID 337727 is the clearest source-level discrepancy found during the label checks.
+The CSV/API quantities and serving information do not map cleanly onto the
+printed daily-serving table. The punctuation may reflect a European thousands
+separator, but changing that interpretation alone does not resolve the serving
+basis.
+
+Because there is not enough evidence to justify a correction, the original
+database values remain unchanged in the analysis and no corrected daily amount
+is claimed. I reported the record to NIH/ODS for clarification on
+19 September 2026. It remains unresolved unless the source is clarified or
+updated.
+
+ID 306204 also remains unresolved because the reviewed source does not provide
+enough information to map the scoop quantity reliably.
+
+These unresolved cases stay in the result rather than being forced into the
+above/below-3 g groups. No claim is made about unreviewed images, independent
 coding agreement, complete ingredient coverage, real contents or measured intake.

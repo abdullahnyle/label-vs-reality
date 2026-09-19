@@ -47,9 +47,16 @@ to take two capsules at each of three meals. That adds up to 7.5 g over the
 written day. Another lists 2.8 g per four capsules and directs four capsules
 daily, so its daily amount stays at 2.8 g.
 
-The image checks also found cases where the database's serving information did
-not agree with the printed label. Those differences are recorded explicitly,
-and uncertain values remain unresolved.
+The label-image checks also showed that agreement inside the database was not
+always enough. For selected records, I compared the CSV data, DSLD API response
+and original label image directly. Some serving-information conflicts could not
+be resolved safely from the database fields alone.
+
+The clearest unresolved example is DSLD ID 337727. Its CSV/API quantities and
+serving information do not map cleanly onto the values printed in the label's
+daily-serving table. I kept the original record unchanged, documented the
+conflict, and reported it to NIH/ODS for clarification on 19 September 2026
+rather than treating it as a confirmed database error.
 
 The [case study](docs/creatine-case-study.md) explains the comparisons and
 examples in detail. The [results tables](data/creatine-review/amount-screens.csv)
