@@ -37,7 +37,7 @@ The next step was to examine directions for 44 labels whose names contain
 the word creatine and whose largest recorded amount is below 3 g, using the same
 original ingredient list and market status. Their written schedules give:
 
-- 17 with daily amounts entirely at or above 3 g.
+- 17 of 44 reached at least 3 g per day under their written directions.
 - 11 entirely below 3 g.
 - Three with a range that crosses 3 g.
 - 13 where the directions or serving information do not support a calculation.

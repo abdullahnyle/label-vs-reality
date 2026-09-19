@@ -6,6 +6,3 @@
 *.csv text eol=lf
 *.json text eol=lf
 *.jsonl text eol=lf
-
-*.sql linguist-detectable=true
-*.sql linguist-language=SQL
