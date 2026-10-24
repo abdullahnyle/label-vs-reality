@@ -117,3 +117,7 @@ interpretations have not yet been checked by a second reviewer.
 
 Code and project documentation use the [MIT licence](LICENSE). Third-party label
 material keeps its original rights. The saved PDFs are not included.
+
+## What's next
+
+This project looked at what labels say. The next part looks at how people read them. I'm interviewing creatine users in different countries about how they choose a product and decide how much to take, and I'll use what they tell me to design and test a clearer way to show this information.
